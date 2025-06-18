@@ -54,9 +54,7 @@
 设置好这些后，去仓库新建一个release，随便新建一个tag，然后点击`Publish release`，GitHub Actions会自动编译并发布APK文件到release中，下载安装即可
 
 </details>  
-
-</details>  
-
+  
 <details> <summary>TG BOT配置</summary>   
 <h3>创建 Telegram Bot</h3>  
 
@@ -73,6 +71,8 @@
 |----------------------------|------------------------------|  
 | `TG_CHAT_ID`      | `-100123456789`群ID |  
 | `TG_BOT_TOKEN`        | `123456：abcdefg`密钥           |  
+
+</details>
 
 <details>  
 <summary>Preview Images</summary>  
