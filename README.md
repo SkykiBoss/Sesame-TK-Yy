@@ -13,35 +13,7 @@
 
 ### 📢欢迎大家提出宝贵意见，共同完善此项目
 
-> ### ~~墙内不再更新~~ 有缘再见~
->
-> [~~戳这里~~](https://fansirs.lanzoue.com/b011kv6pwd) ~~密码:`9527`~~
 
-> ## 2025-06-11更新咸鱼耻辱名单
-
-
-### 以下内容对项目的发展造成了一定的影响，经研究决定 清空所有workflow ，以及项目所有资产，欢迎pr你在咸鱼看到的卖家，我会在这里更新
-
-## 耻辱列表
-
-**访问方法**
-`https://www.goofish.com/personal?userId=xxx`  
-将下面的userid替换上面的xxx
-如 `星空卡券`： https://www.goofish.com/personal?userId=590917148
-
-什么时候这些主页下架了模块，我们再发布新版本😁，或者等咸鱼大佬更新，~~我们再抄~~
-
-|    咸鱼昵称    |    userid     |    更新日期    |                                                                                                        证据 |
-| :--------: | :-----------: | :--------: | --------------------------------------------------------------------------------------------------------: |
-|    星空卡券    |   590917148   | 2025-06-11 | ![image](https://cdn.jsdelivr.net/gh/Fansirsqi/picx-images-hosting@master/20250611/image.4jocuogftd.webp) |
-|   好笑的士兵    | 2208083536994 | 2025-06-11 | ![image](https://cdn.jsdelivr.net/gh/Fansirsqi/picx-images-hosting@master/20250611/image.6m45irtzyh.webp) |
-| 不及时确认收货不交易 | 2212868979480 | 2025-06-11 | ![image](https://cdn.jsdelivr.net/gh/Fansirsqi/picx-images-hosting@master/20250611/image.7zqomtakoy.webp) |
-|   宝宝微多猫    |  2434615193   | 2025-06-11 | ![image](https://cdn.jsdelivr.net/gh/Fansirsqi/picx-images-hosting@master/20250611/image.4cl4zam5vy.webp) |
-|    应用大全    | 2215835360792 | 2025-06-11 | ![image](https://cdn.jsdelivr.net/gh/Fansirsqi/picx-images-hosting@master/20250611/image.2324ft3jo1.webp) |
-|   勤劳的小蜜蜂   | 2219398988369 | 2025-06-13 |  ![image](https://cdn.jsdelivr.net/gh/Fansirsqi/picx-images-hosting@master/20250613/image.8adiif2fz5.png) |
-|    star    |  3320174826   | 2025-06-13 | ![image](https://cdn.jsdelivr.net/gh/Fansirsqi/picx-images-hosting@master/20250613/image.8dx4g4zy20.webp) |
-
-。。。
 
 🤖 代码的大部分内容是通过 `GPT-4o` 模型的辅助来完成的。
 
@@ -60,6 +32,9 @@
 然后在仓库设置相关签名文件信息，使用GitHub Actions编译，下载编译好的APK文件，安装到手机上即可  
 签名的生成以及转码请自行🔍解决 很简单滴~，你绝B可以
 
+<details>  
+<summary>BOT配置</summary>
+
 | 仓库变量名                      | 变量值                          |  
 |----------------------------|------------------------------|  
 | `ANDROID_SIGNING_KEY`      | `keystore.jks`文件的base64编码字符串 |  
@@ -69,6 +44,7 @@
 
 设置好这些后，去仓库新建一个release，随便新建一个tag，然后点击`Publish release`，GitHub Actions会自动编译并发布APK文件到release中，下载安装即可
 
+</details>  
 
 
 <details>  
@@ -84,7 +60,8 @@
 
 </details>  
 
-<details> <summary>Archived content</summary>   
+<details> 
+  <summary>Archived content</summary>   
 
   
 ---  
@@ -118,6 +95,9 @@
 
 </details>  
 
+<details> 
+  <summary>主要功能</summary>
+  
 ## 主要功能
 
 感谢蚂蚁森林对绿化事业的贡献。快速收取蚂蚁森林能量，也为祖国的绿化事业出一份微薄之力~
@@ -133,6 +113,7 @@
 4. 修改 配置界面，模块列表改为左侧垂直布局
 5. 添加 定时唤醒与定时执行逻辑，在基础设置中可配置多个定时执行或定时唤醒时间
 6. 修复 一些逻辑问题
+</details> 
 
 ## 使用说明
 
@@ -142,6 +123,10 @@
 4. 凡以任何方式直接、间接使用APP者，视为自愿接受本声明的约束。
 5. 本APP如无意中侵犯了某个媒体或个人的知识产权，请来信或来电告之，作者将立即删除。
 
+
+<details> 
+  <summary>授权说明</summary>
+  
 ## 授权说明
 
 本项目fork自  
@@ -153,11 +138,18 @@
 
 所有图片由 ༒激༙྇流༙྇泉༙྇༒ 授权使用
 
+</details>
+
+<details> 
+  <summary>协议说明</summary>
+
 ## 协议说明
 
 在 **北京时间2024年7月15日之前** 提交的所有代码 ，遵循 Apache-2.0 协议
 
 自 **北京时间2024年7月15日开始** 提交的所有代码 ，遵循 GPLv3 协议，并禁止用于任何商业用途、禁止二次修改后闭源发布
+
+</details>
 
 ## 鸣谢
 
@@ -166,13 +158,3 @@
 </a>  
 
 贡献名单使用 [contrib.rocks](https://contrib.rocks) 生成
-
-## Star History
-
-<a href="https://star-history.com/#Fansirsqi/Sesame-TK&Timeline">  
- <picture>  
-   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=Fansirsqi/Sesame-TK&type=Timeline&theme=dark" />  
-   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=Fansirsqi/Sesame-TK&type=Timeline" />  
-   <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=Fansirsqi/Sesame-TK&type=Timeline" />  
- </picture>  
-</a>
