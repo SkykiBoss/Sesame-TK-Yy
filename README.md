@@ -28,10 +28,21 @@
 📕 开发者或用户请看[维基](https://github.com/Fansirsqi/Sesame-TK/wiki)
 
 然后在仓库设置相关签名文件信息，使用GitHub Actions编译，下载编译好的APK文件，安装到手机上即可  
-签名的生成以及转码请自行🔍解决 很简单滴~，你绝B可以
+签名的生成以及转码请自行🔍解决 很简单滴~，你可以的。
+
+
+## 使用说明
+
+1. 禁止以技术支持为由倒卖本软件以及下属分支，违者必究
+2. 本APP不篡改，不修改，不获取任何个人信息及其支付宝信息。
+3. 本APP使用者因为违反本声明的规定而触犯中华人民共和国法律的，一切后果自负，作者不承担任何责任。
+4. 凡以任何方式直接、间接使用APP者，视为自愿接受本声明的约束。
+5. 本APP如无意中侵犯了某个媒体或个人的知识产权，请来信或来电告之，作者将立即删除。
+
+
 
 <details>  
-<summary>BOT配置</summary>
+<summary>签名配置</summary>
 
 | 仓库变量名                      | 变量值                          |  
 |----------------------------|------------------------------|  
@@ -44,6 +55,24 @@
 
 </details>  
 
+</details>  
+
+<details> <summary>TG BOT配置</summary>   
+<h3>创建 Telegram Bot</h3>  
+
+- 私聊 @BotFather
+- 发送 /newbot 创建新 bot → 获取 TG_BOT_TOKEN
+- 获取 Chat ID：
+- 将 bot 添加到群组/频道
+- 访问:https://api.telegram.org/bot<TG_BOT_TOKEN>/getUpdates
+- 例如:https://api.telegram.org/bot123456:abcdefg/getUpdates
+- 找到"sender_chat": {"id": -这是一串负数, 或者 "chat": {"id": -这是一串负数,
+- 查找响应中的 "id" 字段 → 即 TG_CHAT_ID
+
+| TG变量名                      | 变量值                          |  
+|----------------------------|------------------------------|  
+| `TG_CHAT_ID`      | `-100123456789`群ID |  
+| `TG_BOT_TOKEN`        | `123456：abcdefg`密钥           |  
 
 <details>  
 <summary>Preview Images</summary>  
@@ -91,6 +120,7 @@
 
 ### 旧版本在 [XQuickEnergy](https://github.com/TKaxv-7S/XQuickEnergy)
 
+
 </details>  
 
 <details> 
@@ -112,15 +142,6 @@
 5. 添加 定时唤醒与定时执行逻辑，在基础设置中可配置多个定时执行或定时唤醒时间
 6. 修复 一些逻辑问题
 </details> 
-
-## 使用说明
-
-1. 禁止以技术支持为由倒卖本软件以及下属分支，违者必究
-2. 本APP不篡改，不修改，不获取任何个人信息及其支付宝信息。
-3. 本APP使用者因为违反本声明的规定而触犯中华人民共和国法律的，一切后果自负，作者不承担任何责任。
-4. 凡以任何方式直接、间接使用APP者，视为自愿接受本声明的约束。
-5. 本APP如无意中侵犯了某个媒体或个人的知识产权，请来信或来电告之，作者将立即删除。
-
 
 <details> 
   <summary>授权说明</summary>
