@@ -79,6 +79,9 @@ public class Privilege {
     private static List<String> handleTaskList(JSONArray taskInfoList, String taskType, String taskName) {
         List<String> results = new ArrayList<>();
         for (int i = 0; i < taskInfoList.length(); i++) {
+            try { // 确保这里有 try 开始
+            JSONObject taskInfo = taskInfoList.getJSONObject(i);
+            JSONArray taskList = taskInfo.getJSONArray("taskInfoList");
             // 安全获取 JSONObject 和 JSONArray
             JSONObject taskInfo = taskInfoList.getJSONObject(i);
             JSONArray taskList = taskInfo.getJSONArray("taskInfoList");
@@ -91,12 +94,12 @@ public class Privilege {
                 if (!taskType.equals(currentTaskType)) continue;
                 processSingleTask(baseInfo, taskType, taskName, results);
             }
-        } catch (JSONException e) {
-            // 异常处理：记录错误并继续处理其他任务
+        } catch (JSONException e) { // 确保这个 catch 与 try 匹配
+            // 添加适当的错误处理
             Log.e("Privilege", "JSON解析错误 at index " + i + ": " + e.getMessage());
-            // 可选：添加错误信息到结果集
-            // results.add("任务解析错误: " + e.getMessage());
+            // 或者: results.add("ERROR: " + e.getMessage());
         }
+    }
         return results;
     }
 
