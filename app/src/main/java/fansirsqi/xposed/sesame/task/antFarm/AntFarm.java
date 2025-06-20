@@ -1128,7 +1128,6 @@ public class AntFarm extends ModelTask {
             // 获取缓存中的题目答案映射
             Map<String, String> farmAnswerCache = DataCache.INSTANCE.getData(FARM_ANSWER_CACHE_KEY, new HashMap<>());
             cleanOldAnswers(farmAnswerCache, today);
-
             // 检查是否今天已经答过题
             if (Status.hasFlagToday(ANSWERED_FLAG)) {
                 // 如果今天已经答过题，检查是否已经缓存了明日答案
@@ -1202,6 +1201,7 @@ public class AntFarm extends ModelTask {
      */
     private void updateTomorrowAnswerCache(JSONArray operationConfigList, String date) {
         try {
+            Log.runtime(TAG, "updateTomorrowAnswerCache 开始更新缓存");
             Map<String, String> farmAnswerCache = DataCache.INSTANCE.getData(FARM_ANSWER_CACHE_KEY, new HashMap<>());
             if (farmAnswerCache == null) {
                 farmAnswerCache = new HashMap<>();
@@ -1225,6 +1225,7 @@ public class AntFarm extends ModelTask {
             }
 
             DataCache.INSTANCE.saveData(FARM_ANSWER_CACHE_KEY, farmAnswerCache);
+            Log.runtime(TAG, "updateTomorrowAnswerCache 缓存更新完毕");
         } catch (Exception e) {
             Log.printStackTrace(TAG, "updateTomorrowAnswerCache 错误:", e);
         }
@@ -1236,6 +1237,7 @@ public class AntFarm extends ModelTask {
      */
     private void cleanOldAnswers(Map<String, String> farmAnswerCache, String today) {
         try {
+            Log.runtime(TAG, "cleanOldAnswers 开始清理缓存");
             if (farmAnswerCache == null || farmAnswerCache.isEmpty()) return;
             // 将今天日期转为数字格式：20250405
              int todayInt = convertDateToInt(today); // 如 "2025-04-05" → 20250405
@@ -1247,7 +1249,7 @@ public class AntFarm extends ModelTask {
                 if (key.contains("|")) {
                     String[] parts = key.split("\\|", 2);
                     if (parts.length == 2) {
-                        String dateStr = parts[1];//获取日期部分
+                        String dateStr = parts[1];//获取日期部分 2025020
                         int dateInt = convertDateToInt(dateStr);
 
                         // 如果无法解析日期，跳过该条目
@@ -1262,9 +1264,13 @@ public class AntFarm extends ModelTask {
                     // 没有日期信息的老数据也保留
                     cleanedMap.put(entry.getKey(), entry.getValue());//保存没有日期的答案
                 }
+//                else {
+//                    cleanedMap.put(entry.getKey(), entry.getValue());//保存没有日期的答案
+//                }
             }
 
             DataCache.INSTANCE.saveData(FARM_ANSWER_CACHE_KEY, cleanedMap);
+            Log.runtime(TAG, "cleanOldAnswers 清理缓存完毕");
         } catch (Exception e) {
             Log.printStackTrace(TAG, "cleanOldAnswers error:", e);
         }
@@ -1426,14 +1432,14 @@ public class AntFarm extends ModelTask {
                             if (Objects.equals(task.optString("awardType"), "ALLPURPOSE")) {
                                 if (awardCount + foodStock > foodStockLimit) {
                                     unreceiveTaskAward++;
-                                    Log.farm(taskTitle + "领取" + awardCount + "g饲料后将超过[" + foodStockLimit + "g]上限，终止领取");
+                                    Log.record(TAG, taskTitle + "领取" + awardCount + "g饲料后将超过[" + foodStockLimit + "g]上限，终止领取");
                                     break;
                                 }
                             }
                             JSONObject receiveTaskAwardjo = new JSONObject(AntFarmRpcCall.receiveFarmTaskAward(taskId));
                             if (ResChecker.checkRes(receiveTaskAwardjo)) {
                                 add2FoodStock(awardCount);
-                                Log.farm("领取奖励🎖️[" + taskTitle + "]#" + awardCount + "g");
+                                Log.farm("庄园奖励🎖️[" + taskTitle + "]#" + awardCount + "g");
                                 doubleCheck = true;
                                 if (unreceiveTaskAward > 0)
                                     unreceiveTaskAward--;
