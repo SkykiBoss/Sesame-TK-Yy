@@ -12,8 +12,6 @@ import java.util.List;
 import fansirsqi.xposed.sesame.util.Log;
 import fansirsqi.xposed.sesame.data.Status;
 
-import android.util.Log;
-
 public class Privilege {
     private static final String TAG = Privilege.class.getSimpleName();
 
@@ -62,83 +60,68 @@ public class Privilege {
         }
     }
 
-    // 在类中添加常量定义
-    private static final String TAG = "Privilege";
-    private static final String YOUTH_PRIVILEGE_PREFIX = "[YouthPrivilege] ";
-    
+
     private static List<String> processYouthPrivilegeTask(List<String> taskConfig) throws JSONException {
         String queryParam = taskConfig.get(0);
         String receiveParam = taskConfig.get(1);
         String taskName = taskConfig.get(2);
-    
+
         JSONArray taskList = getTaskList(queryParam);
         return handleTaskList(taskList, receiveParam, taskName);
     }
-    
+
     private static JSONArray getTaskList(String queryParam) throws JSONException {
         String response = AntForestRpcCall.queryTaskListV2(queryParam);
         JSONObject result = new JSONObject(response);
         return result.getJSONArray("forestTasksNew");
     }
-    
+
     private static List<String> handleTaskList(JSONArray taskInfoList, String taskType, String taskName) {
         List<String> results = new ArrayList<>();
-        for (int i = 0; i < taskInfoList.length(); i++) {
-            try {
-                // 修复：只保留一次变量定义
-                JSONObject taskInfo = taskInfoList.getJSONObject(i);
-                JSONArray taskList = taskInfo.getJSONArray("taskInfoList");
-                
-                for (int j = 0; j < taskList.length(); j++) {
-                    JSONObject task = taskList.optJSONObject(j);
-                    if (task == null) continue;
-                    
-                    JSONObject baseInfo = task.optJSONObject("taskBaseInfo");
-                    if (baseInfo == null) continue;
-                    
-                    String currentTaskType = baseInfo.optString("taskType");
-                    if (!taskType.equals(currentTaskType)) continue;
-                    
-                    processSingleTask(baseInfo, taskType, taskName, results);
-                }
-            } catch (JSONException e) {
-                // 修复：使用正确的日志方法
-                Log.e(TAG, "JSON解析错误 at index " + i + ": " + e.getMessage());
+        try {
+            for (int i = 0; i < taskInfoList.length(); i++) {
+            JSONArray taskList = taskInfoList.getJSONObject(i).getJSONArray("taskInfoList");
+            for (int j = 0; j < taskList.length(); j++) {
+                JSONObject task = taskList.optJSONObject(j);
+                if (task == null) continue;
+                JSONObject baseInfo = task.optJSONObject("taskBaseInfo");
+                if (baseInfo == null) continue;
+                String currentTaskType = baseInfo.optString("taskType");
+                if (!taskType.equals(currentTaskType)) continue;
+                processSingleTask(baseInfo, taskType, taskName, results);
             }
+            }
+        } catch (JSONException e) {
+            Log.printStackTrace(TAG + "任务列表解析失败", e);
+            results.add("处理异常");
         }
         return results;
     }
-    
+
     private static void processSingleTask(JSONObject baseInfo, String taskType, String taskName, List<String> results) {
-        // 确保这些常量已定义
-        final String TASK_RECEIVED = "RECEIVED";
-        final String TASK_FINISHED = "FINISHED";
-        
         String taskStatus = baseInfo.optString("taskStatus");
         if (TASK_RECEIVED.equals(taskStatus)) {
-            Log.i(TAG, YOUTH_PRIVILEGE_PREFIX + "[" + taskName + "]已领取");
+            Log.forest(YOUTH_PRIVILEGE_PREFIX + "[%s]已领取", taskName);
             return;
         }
-    
+
         if (TASK_FINISHED.equals(taskStatus)) {
             handleFinishedTask(taskType, taskName, results);
         }
     }
-    
+
     private static void handleFinishedTask(String taskType, String taskName, List<String> results) {
         try {
             JSONObject response = new JSONObject(AntForestRpcCall.receiveTaskAwardV2(taskType));
             String resultDesc = response.optString("desc");
             results.add(resultDesc);
             String logMessage = "处理成功".equals(resultDesc) ? "领取成功" : "领取结果：" + resultDesc;
-            Log.i(TAG, YOUTH_PRIVILEGE_PREFIX + "[" + taskName + "]" + logMessage);
+            Log.forest(YOUTH_PRIVILEGE_PREFIX + "[" + taskName + "]" + logMessage);
         } catch (JSONException e) {
-            // 修复：使用正确的日志方法
-            Log.e(TAG, "奖励领取结果解析失败", e);
+            Log.printStackTrace(TAG + "奖励领取结果解析失败", e);
             results.add("处理异常");
         }
     }
-    
 
     public static void studentSignInRedEnvelope() {
         try {
