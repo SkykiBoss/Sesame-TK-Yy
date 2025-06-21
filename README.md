@@ -7,15 +7,17 @@
 
 > 👉懒真人版本: [Sesame](https://github.com/LazyImmortal/Sesame)
 
-## 💻本人不是专业的开发者，仅仅是一名热爱开源的爱好者
+## 💻本人不是专业的开发者，仅仅是一名打包自用的菜鸟
 
 ### 📢欢迎大家提出宝贵意见，共同完善此项目
+
+### 📢本人并非原作者，从其他版本转过来会签名冲突
 
 
 
 🤖 代码的大部分内容是通过 `GPT-4o` 模型的辅助来完成的。
 
-🐛 `BUG`和功能建议和请提交 [ISSUE](https://github.com/Fansirsqi/Sesame-TK/issues/new/choose)
+🐛 `BUG`和功能建议和请提交给 @Fansirsqi [ISSUE](https://github.com/Fansirsqi/Sesame-TK/issues/new/choose)
 
 🙁 相关问题，我也可能不会修复,大家轻喷，因为我不是专业的开发者，我可能真的不会修复。
 
@@ -25,7 +27,7 @@
 
 💊 如果你想自己编译，请fork本项目
 
-📕 开发者或用户请看[维基](https://github.com/Fansirsqi/Sesame-TK/wiki)
+📕 开发者或用户请看 @Fansirsqi [维基](https://github.com/Fansirsqi/Sesame-TK/wiki)
 
 然后在仓库设置相关签名文件信息，使用GitHub Actions编译，下载编译好的APK文件，安装到手机上即可  
 签名的生成以及转码请自行🔍解决 很简单滴~，你可以的。
@@ -43,6 +45,8 @@
 
 <details>  
 <summary>签名配置</summary>
+
+生成签名文件方法 [酷安@懒真人](https://www.coolapk.com/feed/49158720?shareKey=NTMwYjdmNjUxMmVkNjUwOTE2YmM~)
 
 | 仓库变量名                      | 变量值                          |  
 |----------------------------|------------------------------|  
@@ -172,8 +176,8 @@
 
 ## 鸣谢
 
-<a href="https://github.com/Fansirsqi/Sesame-TK/graphs/contributors">  
-  <img src="https://contrib.rocks/image?repo=Fansirsqi/Sesame-TK"  alt="contributors"/>  
+<a href="https://github.com/Youyu-Github/Sesame-TK/graphs/contributors">  
+  <img src="https://contrib.rocks/image?repo=Youyu-Github/Sesame-TK"  alt="contributors"/>  
 </a>  
 
 贡献名单使用 [contrib.rocks](https://contrib.rocks) 生成
