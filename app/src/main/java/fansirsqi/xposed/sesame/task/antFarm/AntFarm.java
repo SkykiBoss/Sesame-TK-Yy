@@ -102,7 +102,6 @@ public class AntFarm extends ModelTask {
         bizKeyList.add("HIRE_LOW_ACTIVITY");//雇佣小鸡拿饲料
         bizKeyList.add("DIANTAOHUANDUAN");//去点淘逛一逛
         bizKeyList.add("TAO_GOLDEN_V2");//去逛一逛淘金币小镇
-        //bizKeyList.add("SHANGYEHUA_90_1");//去杂货铺逛一逛(重复）
         bizKeyList.add("TAOBAO_tab2gzy");// 去逛一逛淘宝视频
         bizKeyList.add("YITAO_appgyg");// 去一淘APP逛逛
         bizKeyList.add("ANTFARM_chouchoule");// 【抽抽乐】好运装扮来袭！
@@ -118,7 +117,6 @@ public class AntFarm extends ModelTask {
         bizKeyList.add("TAOBAO_renshenggyg");// 去淘宝人生逛一逛
         bizKeyList.add("TOUTIAO_daoduan");// 去今日头条极速版逛一逛
         bizKeyList.add("SLEEP");// 让小鸡去睡觉
-        // py ALLG999
         bizKeyList.add("HUABEI2023");// 去花呗花花卡逛一逛，完成可得90g饲料
         bizKeyList.add("XJLY_meishiqiyuji30");// 去小鸡乐园开2次宝箱，完成可得90g饲料
         bizKeyList.add("25WFYX_xiaojinuoche");// 去小鸡乐园开2次宝箱，完成可得90g饲料
@@ -307,7 +305,7 @@ public class AntFarm extends ModelTask {
         modelFields.addField(family = new BooleanModelField("family", "家庭 | 开启", false));
         modelFields.addField(familyOptions = new SelectModelField("familyOptions", "家庭 | 选项", new LinkedHashSet<>(), OtherEntityProvider.farmFamilyOption()));
         modelFields.addField(notInviteList = new SelectModelField("notInviteList", "家庭 | 好友分享排除列表", new LinkedHashSet<>(), AlipayUser::getList));
-//        modelFields.addField(giftFamilyDrawFragment = new StringModelField("giftFamilyDrawFragment", "家庭 | 扭蛋碎片赠送用户ID(配置目录查看)", ""));
+        modelFields.addField(giftFamilyDrawFragment = new StringModelField("giftFamilyDrawFragment", "家庭 | 扭蛋碎片赠送用户ID(配置目录查看)", ""));
         modelFields.addField(paradiseCoinExchangeBenefit = new BooleanModelField("paradiseCoinExchangeBenefit", "小鸡乐园 | 兑换权益", false));
         modelFields.addField(paradiseCoinExchangeBenefitList = new SelectModelField("paradiseCoinExchangeBenefitList", "小鸡乐园 | 权益列表", new LinkedHashSet<>(), ParadiseCoinBenefit::getList));
         return modelFields;
@@ -3159,7 +3157,7 @@ public class AntFarm extends ModelTask {
             list.add(new AntFarmFamilyOption("familySign", "每日签到"));
             list.add(new AntFarmFamilyOption("eatTogetherConfig", "请吃美食"));
             list.add(new AntFarmFamilyOption("feedFamilyAnimal", "帮喂小鸡"));
-//            list.add(new AntFarmFamilyOption("deliverMsgSend", "道早安"));
+            list.add(new AntFarmFamilyOption("deliverMsgSend", "道早安"));
             list.add(new AntFarmFamilyOption("familyClaimReward", "领取奖励"));
             list.add(new AntFarmFamilyOption("inviteFriendVisitFamily", "好友分享"));
             list.add(new AntFarmFamilyOption("assignRights", "使用顶梁柱特权"));
