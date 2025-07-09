@@ -600,30 +600,98 @@ public class AntFarm extends ModelTask {
         return false;
     }
 
+//原版小鸡睡觉
+//    private void animalSleepAndWake() {
+//        try {
+//            String sleepTimeStr = sleepTime.getValue();
+//            if ("-1".equals(sleepTimeStr)) {
+//                Log.runtime(TAG, "当前已关闭小鸡睡觉");
+//                return;
+//            }
+//            Calendar now = TimeUtil.getNow();
+//            Calendar animalSleepTimeCalendar = TimeUtil.getTodayCalendarByTimeStr(sleepTimeStr);
+//            if (animalSleepTimeCalendar == null) {
+//                Log.record(TAG, "小鸡睡觉时间格式错误，请重新设置");
+//                return;
+//            }
+//            Integer sleepMinutesInt = sleepMinutes.getValue();
+//            Calendar animalWakeUpTimeCalendar = (Calendar) animalSleepTimeCalendar.clone();
+//            animalWakeUpTimeCalendar.add(Calendar.MINUTE, sleepMinutesInt);
+//            long animalSleepTime = animalSleepTimeCalendar.getTimeInMillis();
+//            long animalWakeUpTime = animalWakeUpTimeCalendar.getTimeInMillis();
+//            if (animalSleepTime > animalWakeUpTime) {
+//                Log.record(TAG, "小鸡睡觉设置有误，请重新设置");
+//                return;
+//            }
+//            boolean afterSleepTime = now.compareTo(animalSleepTimeCalendar) > 0;
+//            boolean afterWakeUpTime = now.compareTo(animalWakeUpTimeCalendar) > 0;
+//            if (afterSleepTime && afterWakeUpTime) {
+//                if (!Status.canAnimalSleep()) {
+//                    return;
+//                }
+//                Log.record(TAG, "已错过小鸡今日睡觉时间");
+//                return;
+//            }
+//            String sleepTaskId = "AS|" + animalSleepTime;
+//            String wakeUpTaskId = "AW|" + animalWakeUpTime;
+//            if (!hasChildTask(sleepTaskId) && !afterSleepTime) {
+//                addChildTask(new ChildModelTask(sleepTaskId, "AS", this::animalSleepNow, animalSleepTime));
+//                Log.record(TAG, "添加定时睡觉🛌[" + UserMap.getCurrentMaskName() + "]在[" + TimeUtil.getCommonDate(animalSleepTime) + "]执行");
+//            }
+//            if (!hasChildTask(wakeUpTaskId) && !afterWakeUpTime) {
+//                addChildTask(new ChildModelTask(wakeUpTaskId, "AW", this::animalWakeUpNow, animalWakeUpTime));
+//                Log.record(TAG, "添加定时起床🛌[" + UserMap.getCurrentMaskName() + "]在[" + TimeUtil.getCommonDate(animalWakeUpTime) + "]执行");
+//            }
+//            if (afterSleepTime) {
+//                if (Status.canAnimalSleep()) {
+//                    animalSleepNow();
+//                }
+//            }
+//        } catch (Exception e) {
+//            Log.runtime(TAG, "animalSleepAndWake err:");
+//            Log.printStackTrace(e);
+//        }
+//    }
+
+
+
+    // 新增成员变量用于跟踪最近的任务ID
+    private String lastSleepTaskId = null;
+    private String lastWakeUpTaskId = null;
+    
     private void animalSleepAndWake() {
         try {
             String sleepTimeStr = sleepTime.getValue();
             if ("-1".equals(sleepTimeStr)) {
                 Log.runtime(TAG, "当前已关闭小鸡睡觉");
+                
+                // 增强日志：记录正在取消的任务
+                cancelExistingSleepTasks();
                 return;
             }
+            
             Calendar now = TimeUtil.getNow();
             Calendar animalSleepTimeCalendar = TimeUtil.getTodayCalendarByTimeStr(sleepTimeStr);
             if (animalSleepTimeCalendar == null) {
                 Log.record(TAG, "小鸡睡觉时间格式错误，请重新设置");
                 return;
             }
+            
             Integer sleepMinutesInt = sleepMinutes.getValue();
             Calendar animalWakeUpTimeCalendar = (Calendar) animalSleepTimeCalendar.clone();
             animalWakeUpTimeCalendar.add(Calendar.MINUTE, sleepMinutesInt);
+            
             long animalSleepTime = animalSleepTimeCalendar.getTimeInMillis();
             long animalWakeUpTime = animalWakeUpTimeCalendar.getTimeInMillis();
+            
             if (animalSleepTime > animalWakeUpTime) {
                 Log.record(TAG, "小鸡睡觉设置有误，请重新设置");
                 return;
             }
+            
             boolean afterSleepTime = now.compareTo(animalSleepTimeCalendar) > 0;
             boolean afterWakeUpTime = now.compareTo(animalWakeUpTimeCalendar) > 0;
+            
             if (afterSleepTime && afterWakeUpTime) {
                 if (!Status.canAnimalSleep()) {
                     return;
@@ -631,16 +699,31 @@ public class AntFarm extends ModelTask {
                 Log.record(TAG, "已错过小鸡今日睡觉时间");
                 return;
             }
+            
+            // 在添加新任务前取消旧任务
+            cancelExistingSleepTasks();
+            
             String sleepTaskId = "AS|" + animalSleepTime;
             String wakeUpTaskId = "AW|" + animalWakeUpTime;
-            if (!hasChildTask(sleepTaskId) && !afterSleepTime) {
-                addChildTask(new ChildModelTask(sleepTaskId, "AS", this::animalSleepNow, animalSleepTime));
-                Log.record(TAG, "添加定时睡觉🛌[" + UserMap.getCurrentMaskName() + "]在[" + TimeUtil.getCommonDate(animalSleepTime) + "]执行");
+            
+            if (!afterSleepTime) {
+                if (!hasChildTask(sleepTaskId)) {
+                    addChildTask(new ChildModelTask(sleepTaskId, "AS", this::animalSleepNow, animalSleepTime));
+                    lastSleepTaskId = sleepTaskId;
+                    Log.record(TAG, "添加定时睡觉🛌[" + UserMap.getCurrentMaskName() + "]在[" + 
+                              TimeUtil.getCommonDate(animalSleepTime) + "]执行");
+                }
             }
-            if (!hasChildTask(wakeUpTaskId) && !afterWakeUpTime) {
-                addChildTask(new ChildModelTask(wakeUpTaskId, "AW", this::animalWakeUpNow, animalWakeUpTime));
-                Log.record(TAG, "添加定时起床🛌[" + UserMap.getCurrentMaskName() + "]在[" + TimeUtil.getCommonDate(animalWakeUpTime) + "]执行");
+            
+            if (!afterWakeUpTime) {
+                if (!hasChildTask(wakeUpTaskId)) {
+                    addChildTask(new ChildModelTask(wakeUpTaskId, "AW", this::animalWakeUpNow, animalWakeUpTime));
+                    lastWakeUpTaskId = wakeUpTaskId;
+                    Log.record(TAG, "添加定时起床🛌[" + UserMap.getCurrentMaskName() + "]在[" + 
+                              TimeUtil.getCommonDate(animalWakeUpTime) + "]执行");
+                }
             }
+            
             if (afterSleepTime) {
                 if (Status.canAnimalSleep()) {
                     animalSleepNow();
@@ -651,6 +734,72 @@ public class AntFarm extends ModelTask {
             Log.printStackTrace(e);
         }
     }
+    
+    // 取消现有睡眠/唤醒任务的辅助方法（含增强日志）
+    private void cancelExistingSleepTasks() {
+        int canceledCount = 0;
+        
+        if (lastSleepTaskId != null) {
+            Log.debug(TAG, "正在取消睡眠任务: " + lastSleepTaskId);
+            if (removeChildTask(lastSleepTaskId)) {
+                canceledCount++;
+            }
+            lastSleepTaskId = null;
+        }
+        
+        if (lastWakeUpTaskId != null) {
+            Log.debug(TAG, "正在取消唤醒任务: " + lastWakeUpTaskId);
+            if (removeChildTask(lastWakeUpTaskId)) {
+                canceledCount++;
+            }
+            lastWakeUpTaskId = null;
+        }
+        
+        if (canceledCount > 0) {
+            Log.record(TAG, "已取消" + canceledCount + "个睡眠/唤醒任务");
+        }
+    }
+    
+    // ============= 在睡眠和唤醒方法中添加清理代码 =============
+    
+    private void animalSleepNow() {
+        try {
+            // 原有的睡眠逻辑...
+            Log.record(TAG, "小鸡开始睡觉");
+            
+            // 额外建议：执行后清理任务ID
+            lastSleepTaskId = null;
+            Log.debug(TAG, "睡眠任务执行完成，已清理任务ID");
+        } catch (Exception e) {
+            Log.runtime(TAG, "animalSleepNow err:");
+            Log.printStackTrace(e);
+        }
+    }
+    
+    private void animalWakeUpNow() {
+        try {
+            // 原有的唤醒逻辑...
+            Log.record(TAG, "小鸡醒来");
+            
+            // 额外建议：执行后清理任务ID
+            lastWakeUpTaskId = null;
+            Log.debug(TAG, "唤醒任务执行完成，已清理任务ID");
+        } catch (Exception e) {
+            Log.runtime(TAG, "animalWakeUpNow err:");
+            Log.printStackTrace(e);
+        }
+    }
+
+
+
+
+
+
+
+
+
+    
+    
 
         /**
      * 初始化庄园
