@@ -608,13 +608,15 @@ public class AntFarm extends ModelTask {
                 Log.runtime(TAG, "当前已关闭小鸡睡觉");
                 return;
             }
-            if ("2001".equals(sleepTimeStr)) {
-                Log.debug(TAG, "用户小鸡配置为默认配置, 开始打印配置");
-                Log.debug(TAG, "当前用户ID：" + UserMap.getCurrentUid());
-                Log.debug(Config.toSaveStr());
-                Log.debug(TAG, "当前用户：" + UserMap.getCurrentUid() + " 配置打印结束");
-                return;
-            }
+            
+//            if ("2001".equals(sleepTimeStr)) {
+//                Log.debug(TAG, "用户小鸡配置为默认配置, 开始打印配置");
+//                Log.debug(TAG, "当前用户ID：" + UserMap.getCurrentUid());
+//                Log.debug(Config.toSaveStr());
+//                Log.debug(TAG, "当前用户：" + UserMap.getCurrentUid() + " 配置打印结束");
+//                return;
+//            } //不给小鸡睡觉
+            
             Calendar now = TimeUtil.getNow();
             Calendar animalSleepTimeCalendar = TimeUtil.getTodayCalendarByTimeStr(sleepTimeStr);
             if (animalSleepTimeCalendar == null) {
