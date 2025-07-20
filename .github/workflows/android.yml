@@ -179,6 +179,7 @@ jobs:
           echo "Creating tag: $VERSION_TAG"
           git tag "$VERSION_TAG"
           git push origin "$VERSION_TAG"
+
       - name: Upload Assets to Source Release
         uses: softprops/action-gh-release@v2
         with:
