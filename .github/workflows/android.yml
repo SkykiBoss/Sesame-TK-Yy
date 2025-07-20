@@ -143,7 +143,7 @@ jobs:
           to: ${{ secrets.TG_CHAT_ID }}
           token: ${{ secrets.TG_BOT_TOKEN }}
           message: |
-            📦 New Version ${{ steps.extract_info.outputs.version }} Build!
+            📦 *New Version ${{ steps.extract_info.outputs.version }} Build!*
 
             - Files: 
               - Normal: `${{ steps.extract_info.outputs.normal_file }}`
@@ -151,9 +151,9 @@ jobs:
             - Branch: `${{ github.ref_name }}`
             - Triggered by: `${{ github.actor }}`
 
-             下载说明: 
-               Normal 为正常版本,适用于`Android 8.0`及以上的系统
-               Compatible 为兼容版本,适用于`Android 7.0`及以下的系统,最低支持`Android 5.1`
+            *下载说明:*
+              * Normal 为正常版本,适用于`Android 8.0`及以上的系统 *
+              * Compatible 为兼容版本,适用于`Android 7.0`及以下的系统,最低支持`Android 5.1` *
 
             ${{ steps.commit_details.outputs.COMMIT_MESSAGE_BODY }}
           format: markdown
@@ -179,6 +179,7 @@ jobs:
           echo "Creating tag: $VERSION_TAG"
           git tag "$VERSION_TAG"
           git push origin "$VERSION_TAG"
+
       - name: Upload Assets to Source Release
         uses: softprops/action-gh-release@v2
         with:
