@@ -180,9 +180,6 @@ public class AntForest extends ModelTask {
     private static int totalCollected = 0;
     private static int totalHelpCollected = 0;
     private static int totalWatered = 0;
-    private static final int totalCollected = 0;
-    private static final int totalHelpCollected = 0;
-    private static final int totalWatered = 0;
     @Getter
     private Set<String> dontCollectMap = new HashSet<>();
     ArrayList<String> emojiList = new ArrayList<>(Arrays.asList(
