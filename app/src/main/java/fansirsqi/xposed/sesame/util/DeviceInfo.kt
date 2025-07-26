@@ -28,7 +28,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import fansirsqi.xposed.sesame.BuildConfig
-import androidx.compose.ui.tooling.preview.PreviewParameterProvider
+//import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 
 class PreviewDeviceInfoProvider : PreviewParameterProvider<Map<String, String>> {
     override val values: Sequence<Map<String, String>> = sequenceOf(
@@ -86,11 +86,11 @@ fun DeviceInfoCard(info: Map<String, String>) {
                 Spacer(modifier = Modifier.height(4.dp))
             }
             // 循环外单独显示红色自定义文字
-            Text(
-                text = "Statement：个人学习自用，请勿倒卖。🪧",
-                fontSize = 14.sp,
-                color = Color.Black
-                )
+            //Text(
+                //text = "Statement：个人学习自用，请勿倒卖。🪧",
+                //fontSize = 14.sp,
+                //color = Color.Red
+                //)
         }
     }
 }
@@ -132,6 +132,7 @@ object DeviceInfoUtil {
             "Device ID" to androidId,
             "Module Version" to "${BuildConfig.VERSION}-${BuildConfig.BUILD_TAG}.${BuildConfig.BUILD_TYPE} 📦",
             "Module Build" to "${BuildConfig.BUILD_DATE} ${BuildConfig.BUILD_TIME} ⏰"
+            "Statement" to "个人学习自用，请勿倒卖。🪧"
         )
     }
 }
