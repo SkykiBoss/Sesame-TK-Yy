@@ -90,6 +90,7 @@ fun DeviceInfoCard(info: Map<String, String>) {
                 text = "Statement：个人学习自用，请勿倒卖。🪧",
                 fontSize = 14.sp,
                 color = Color.Black
+                )
         }
     }
 }
