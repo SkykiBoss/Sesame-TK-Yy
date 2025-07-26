@@ -1,4 +1,4 @@
-![Sesame-TK]([https://socialify.git.ci/Youyu-Github/Sesame-TK/image?description=1&font=Source%20Code%20Pro&forks=1&issues=1&logo=https%3A%2F%2Fraw.githubusercontent.com%2FYouyu-Github%2FSesame-TK%2Frefs%2Fheads%2Fmain%2Fapp%2Fsrc%2Fmain%2Fassets%2Fweb%2FSesame-TK-logo.svg&name=1&owner=1&pattern=Circuit%20Board&pulls=1&stargazers=1&theme=Auto](https://socialify.git.ci/Youyu-Github/Sesame-TK/image?custom_description=%E4%B8%AA%E4%BA%BA%E5%AD%A6%E4%B9%A0%E8%87%AA%E7%94%A8Sesame-TK%EF%BC%8C%E8%AF%B7%E5%8B%BF%E5%80%92%E5%8D%96%E3%80%82&custom_language=GitHub&description=1&font=Jost&forks=1&issues=1&language=1&logo=https%3A%2F%2Fraw.githubusercontent.com%2FYouyu-Github%2FSesame-TK%2Frefs%2Fheads%2Fmain%2Fapp%2Fsrc%2Fmain%2Fassets%2Fweb%2FSesame-TK-logo.svg&name=1&owner=1&pattern=Floating+Cogs&pulls=1&stargazers=1&theme=Light))
+![Sesame-TK](https://socialify.git.ci/Youyu-Github/Sesame-TK/image?custom_description=%E4%B8%AA%E4%BA%BA%E5%AD%A6%E4%B9%A0%E8%87%AA%E7%94%A8Sesame-TK%EF%BC%8C%E8%AF%B7%E5%8B%BF%E5%80%92%E5%8D%96%E3%80%82&custom_language=GitHub&description=1&font=Jost&forks=1&issues=1&language=1&logo=https%3A%2F%2Fraw.githubusercontent.com%2FYouyu-Github%2FSesame-TK%2Frefs%2Fheads%2Fmain%2Fapp%2Fsrc%2Fmain%2Fassets%2Fweb%2FSesame-TK-logo.svg&name=1&owner=1&pattern=Floating+Cogs&pulls=1&stargazers=1&theme=Light)
 
 [![License](https://img.shields.io/github/license/Youyu-Github/Sesame-TK?labelColor=fff&label=License&logo=gnuprivacyguard)](https://raw.githubusercontent.com/Youyu-Github/Sesame-TK/refs/heads/main/LICENSE)  
 [![Latest Release](https://img.shields.io/github/release/Youyu-Github/Sesame-TK?labelColor=fff&label=Releases&logo=gitlfs)](../../releases)  
@@ -186,13 +186,3 @@
 </a>  
 
 > 贡献名单使用 [contrib.rocks](https://contrib.rocks) 生成
-
-## Star History
-
-<a href="https://star-history.com/#Youyu-Github/Sesame-TK&Timeline">  
- <picture>  
-   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=Youyu-Github/Sesame-TK&type=Timeline&theme=dark" />  
-   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=Youyu-Github/Sesame-TK&type=Timeline" />  
-   <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=Youyu-Github/Sesame-TK&type=Timeline" />  
- </picture>  
-</a>
