@@ -411,7 +411,7 @@ class MainActivity : BaseActivity() {
                 ListDialog.ListType.SHOW
             )
         } else {
-            ToastUtil.makeText(this, "😡 别他妈选默认！！！！！！！！", Toast.LENGTH_LONG).show()
+            ToastUtil.makeText(this, "😡 别选默认！！！！！！！！", Toast.LENGTH_LONG).show()
         }
     }
 
