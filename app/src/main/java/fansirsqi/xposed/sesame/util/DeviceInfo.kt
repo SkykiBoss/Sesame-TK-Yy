@@ -90,7 +90,7 @@ fun DeviceInfoCard(info: Map<String, String>) {
             // 循环外单独显示红色自定义文字
             Text(
                 text = "Statement：本APP是为学习研究用，请勿倒卖🪧",
-                fontSize = 12.sp,
+                fontSize = 14.sp,
                 color = Color.Red
                 )
         }
