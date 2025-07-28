@@ -95,18 +95,18 @@ object HookUtil {
         }
     }
 
-    fun hookOtherService(lpparam: XC_LoadPackage.LoadPackageParam) {
-        try {
-            //hook 服务不在后台
-            XposedHelpers.findAndHookMethod("com.alipay.mobile.common.fgbg.FgBgMonitorImpl", lpparam.classLoader, "isInBackground", XC_MethodReplacement.returnConstant(false))
-            XposedHelpers.findAndHookMethod("com.alipay.mobile.common.fgbg.FgBgMonitorImpl", lpparam.classLoader, "isInBackground", Boolean::class.javaPrimitiveType, XC_MethodReplacement.returnConstant(false))
-            XposedHelpers.findAndHookMethod("com.alipay.mobile.common.fgbg.FgBgMonitorImpl", lpparam.classLoader, "isInBackgroundV2", XC_MethodReplacement.returnConstant(false))
-            //hook 服务在前台
-            XposedHelpers.findAndHookMethod("com.alipay.mobile.common.transport.utils.MiscUtils", lpparam.classLoader, "isAtFrontDesk", lpparam.classLoader.loadClass("android.content.Context"), XC_MethodReplacement.returnConstant(true))
-        } catch (e: Exception) {
-            Log.printStackTrace(TAG, "hookOtherService 失败", e)
-        }
-    }
+//    fun hookOtherService(lpparam: XC_LoadPackage.LoadPackageParam) {
+//        try {
+//            //hook 服务不在后台
+//            XposedHelpers.findAndHookMethod("com.alipay.mobile.common.fgbg.FgBgMonitorImpl", lpparam.classLoader, "isInBackground", XC_MethodReplacement.returnConstant(false))
+//            XposedHelpers.findAndHookMethod("com.alipay.mobile.common.fgbg.FgBgMonitorImpl", lpparam.classLoader, "isInBackground", Boolean::class.javaPrimitiveType, XC_MethodReplacement.returnConstant(false))
+//            XposedHelpers.findAndHookMethod("com.alipay.mobile.common.fgbg.FgBgMonitorImpl", lpparam.classLoader, "isInBackgroundV2", XC_MethodReplacement.returnConstant(false))
+//            //hook 服务在前台
+//            XposedHelpers.findAndHookMethod("com.alipay.mobile.common.transport.utils.MiscUtils", lpparam.classLoader, "isAtFrontDesk", lpparam.classLoader.loadClass("android.content.Context"), XC_MethodReplacement.returnConstant(true))
+//        } catch (e: Exception) {
+/            Log.printStackTrace(TAG, "hookOtherService 失败", e)
+//        }
+//    }
 
     /**
      * Hook DefaultBridgeCallback.sendJSONResponse 方法，记录响应内容
