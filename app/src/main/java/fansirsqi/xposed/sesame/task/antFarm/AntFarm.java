@@ -1527,10 +1527,11 @@ public class AntFarm extends ModelTask {
             add2FoodStock(-consumedFood);
             Log.farm("投喂小鸡🥣[" + consumedFood + "g]#剩余" + foodStock + "g");
             
-            // 3. 尝试使用加饭卡（简化条件检查）
+            // 3. 尝试使用加饭卡（安全获取动物状态）
             if (useBigEaterTool.getValue() 
                 && foodStock >= 180 
-                && AnimalFeedStatus.EATING.name().equals(getAnimalStatus())
+                && ownerAnimal != null  // 添加空指针检查
+                && AnimalFeedStatus.EATING.name().equals(ownerAnimal.animalFeedStatus) // 直接使用字段
                 && useFarmTool(ownerFarmId, ToolType.BIG_EATER_TOOL)) 
             {
                 // 同步状态并更新数据
