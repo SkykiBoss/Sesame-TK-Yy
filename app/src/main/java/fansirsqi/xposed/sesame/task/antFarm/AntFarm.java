@@ -1515,26 +1515,43 @@ public class AntFarm extends ModelTask {
      */
     private Boolean feedAnimal(String farmId) {
         try {
+            // 1. 饲料不足检查
             if (foodStock < 180) {
                 Log.record(TAG, "喂鸡饲料不足");
-            } else if (useBigEaterTool.getValue() && foodStock >= 360 && useFarmTool(ownerFarmId, ToolType.BIG_EATER_TOOL)) {
-                JSONObject jo = syncAnimalStatus(ownerFarmId, "SYNC_USE_BIG_EATER_TOOL", "QUERY_EMOTION_INFO|QUERY_FARM_INFO|QUERY_USER_INFO");
-                if (jo != null) {
-                    parseSyncAnimalStatusResponse(jo);
-                }
-                Log.farm("使用加饭卡🥣投喂🐥成功#剩余饲料" + foodStock + "g");
-                return true;
-            } else {
-                JSONObject jo = new JSONObject(AntFarmRpcCall.feedAnimal(farmId));
-                int feedFood = foodStock - jo.getInt("foodStock");
-                add2FoodStock(-feedFood);
-                Log.farm("投喂小鸡🥣[" + feedFood + "g]#剩余" + foodStock + "g");
-                return true;
+                return false;
             }
+            
+            // 2. 执行普通喂食
+            JSONObject feedResponse = new JSONObject(AntFarmRpcCall.feedAnimal(farmId));
+            int consumedFood = foodStock - feedResponse.getInt("foodStock");
+            add2FoodStock(-consumedFood);
+            Log.farm("投喂小鸡🥣[" + consumedFood + "g]#剩余" + foodStock + "g");
+            
+            // 3. 尝试使用加饭卡（简化条件检查）
+            if (useBigEaterTool.getValue() 
+                && foodStock >= 180 
+                && AnimalFeedStatus.EATING.name().equals(getAnimalStatus())
+                && useFarmTool(ownerFarmId, ToolType.BIG_EATER_TOOL)) 
+            {
+                // 同步状态并更新数据
+                JSONObject syncResponse = syncAnimalStatus(
+                    ownerFarmId, 
+                    "SYNC_USE_BIG_EATER_TOOL", 
+                    "QUERY_EMOTION_INFO|QUERY_FARM_INFO|QUERY_USER_INFO"
+                );
+                
+                if (syncResponse != null) {
+                    parseSyncAnimalStatusResponse(syncResponse);
+                }
+                Log.farm("使用加饭卡🥣追加投喂🐥成功#剩余饲料" + foodStock + "g");
+            }
+            
+            return true;  // 普通喂食成功即返回true
+            
         } catch (Throwable t) {
             Log.printStackTrace(TAG, "feedAnimal err:", t);
+            return false;
         }
-        return false;
     }
 
     /**
@@ -2687,9 +2704,9 @@ public class AntFarm extends ModelTask {
     }
 
     public enum ToolType {
-        STEALTOOL, ACCELERATETOOL, SHARETOOL, FENCETOOL, NEWEGGTOOL, DOLLTOOL, ORDINARY_ORNAMENT_TOOL, ADVANCE_ORNAMENT_TOOL, BIG_EATER_TOOL;
+        STEALTOOL, ACCELERATETOOL, BIG_EATER_TOOL, SHARETOOL, FENCETOOL, NEWEGGTOOL, DOLLTOOL, ORDINARY_ORNAMENT_TOOL, ADVANCE_ORNAMENT_TOOL;
 
-        public static final CharSequence[] nickNames = {"蹭饭卡", "加速卡", "救济卡", "篱笆卡", "新蛋卡", "公仔补签卡", "普通装扮补签卡", "高级装扮补签卡", "加饭卡"};
+        public static final CharSequence[] nickNames = {"蹭饭卡", "加速卡", "加饭卡", "救济卡", "篱笆卡", "新蛋卡", "公仔补签卡", "普通装扮补签卡", "高级装扮补签卡"};
 
         public CharSequence nickName() {
             return nickNames[ordinal()];
