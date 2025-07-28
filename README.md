@@ -1,6 +1,6 @@
 ![Sesame-TK](https://socialify.git.ci/Youyu-Github/Sesame-TK/image?custom_description=%F0%9F%94%96%E6%9C%ACAPP%E6%98%AF%E4%B8%BA%E5%AD%A6%E4%B9%A0%E7%A0%94%E7%A9%B6%E7%94%A8%EF%BC%8C%E8%AF%B7%E5%8B%BF%E5%80%92%E5%8D%96%E3%80%82&custom_language=GitHub&description=1&font=Jost&forks=1&issues=1&language=1&logo=https%3A%2F%2Fraw.githubusercontent.com%2FYouyu-Github%2FSesame-TK%2Frefs%2Fheads%2Fmain%2Fapp%2Fsrc%2Fmain%2Fassets%2Fweb%2FSesame-TK-logo.svg&name=1&owner=1&pattern=Floating+Cogs&pulls=1&stargazers=1&theme=Light)
 
-[![License](https://img.shields.io/badge/License-WTFPL-orange?style=flat&logo=gnuprivacyguard&labelColor=white)](https://raw.githubusercontent.com/Youyu-Github/Sesame-TK/refs/heads/main/LICENSE)  
+[![License](https://img.shields.io/badge/License-WTFPL-orange?style=flat&logo=gnuprivacyguard&labelColor=white)](https://raw.githubusercontent.com/Youyu-Github/Sesame-TK/refs/heads/backups_04/LICENSE)  
 [![Latest Release](https://img.shields.io/github/release/Youyu-Github/Sesame-TK?labelColor=fff&label=Releases&logo=gitlfs)](../../releases)  
 [![All Releases Download](https://img.shields.io/github/downloads/Youyu-Github/Sesame-TK/total?labelColor=fff&label=Downloads&logo=codefresh)](../../releases)  
 
@@ -175,7 +175,7 @@
 
 自 **北京时间2024年7月15日开始** 提交的所有代码 ，遵循 GPLv3 协议，并禁止用于任何商业用途、禁止二次修改后闭源发布
 
-自 **北京时间2025年7月23日开始** 提交的所有代码 ，遵循 [WTFPL](https://www.wtfpl.net/) 协议 **你想干嘛就干嘛**
+自 **北京时间2025年7月23日开始** 提交的所有代码 ，遵循 [WTFPL](https://www.wtfpl.net/) 协议 **你他妈想干嘛就干嘛**
 
 </details>
 
