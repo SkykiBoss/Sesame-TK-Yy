@@ -366,7 +366,7 @@ public class ApplicationHook implements IXposedHookLoadPackage {
                 Log.printStackTrace(TAG, t);
             }
 
-            HookUtil.INSTANCE.hookOtherService(loadPackageParam);
+//            HookUtil.INSTANCE.hookOtherService(loadPackageParam);
 
             hooked = true;
             Log.runtime(TAG, "load success: " + loadPackageParam.packageName);
