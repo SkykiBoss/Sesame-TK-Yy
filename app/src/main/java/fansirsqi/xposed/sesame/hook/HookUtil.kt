@@ -104,7 +104,7 @@ object HookUtil {
 //            //hook 服务在前台
 //            XposedHelpers.findAndHookMethod("com.alipay.mobile.common.transport.utils.MiscUtils", lpparam.classLoader, "isAtFrontDesk", lpparam.classLoader.loadClass("android.content.Context"), XC_MethodReplacement.returnConstant(true))
 //        } catch (e: Exception) {
-/            Log.printStackTrace(TAG, "hookOtherService 失败", e)
+//            Log.printStackTrace(TAG, "hookOtherService 失败", e)
 //        }
 //    }
 
