@@ -1557,7 +1557,7 @@ public class AntFarm extends ModelTask {
             if (useBigEaterTool.getValue() 
                 && foodStock >= 180 
                 && ownerAnimal != null 
-                && AnimalFeedStatus.EATING.name().equals(ownerAnimal.animalFeedStatus) 
+                && AnimalFeedStatus.EATING.name().equals(ownerAnimal.animalFeedStatus))
             {
                 if (useFarmTool(ownerFarmId, ToolType.BIG_EATER_TOOL)) {
                     JSONObject syncResponse = syncAnimalStatus(
