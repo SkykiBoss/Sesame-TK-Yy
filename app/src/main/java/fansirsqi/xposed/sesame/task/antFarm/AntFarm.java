@@ -755,7 +755,7 @@ public class AntFarm extends ModelTask {
             // 使用内部枚举调用
             boolean result = useFarmTool(ownerFarmId, AntFarm.ToolType.BIG_EATER_TOOL);
             if (result) {
-                Log.farm("追加使用「加饭卡」[" + feedFood + "g]🥣成功#剩余饲料" + foodStock + "g");
+                Log.farm("追加使用「加饭卡」🥣成功#剩余饲料" + foodStock + "g");
                 GlobalThreadPools.sleep(500);
                 needReload = true;
             } else {
