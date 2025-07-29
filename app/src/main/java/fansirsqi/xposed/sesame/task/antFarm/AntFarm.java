@@ -1513,76 +1513,61 @@ public class AntFarm extends ModelTask {
      * @param farmId 庄园ID
      * @return true: 喂鸡成功，false: 喂鸡失败
      */
+    
     private Boolean feedAnimal(String farmId) {
         try {
-            // 1. 饲料不足检查（至少180g才能进行任何操作）
+            // 获取小鸡吃饭状态（假设有此方法）
+            boolean isEating = isAnimalEating();
+            
             if (foodStock < 180) {
                 Log.record(TAG, "喂鸡饲料不足");
                 return false;
-            }
+            } 
             
-            // 2. 获取小鸡当前状态
-            String animalStatus = ownerAnimal != null ? ownerAnimal.animalFeedStatus : "";
-            boolean isEating = AnimalFeedStatus.EATING.name().equals(animalStatus);
-            
-            // 3. 如果小鸡已经在吃饭状态，直接使用加饭卡
+            // 情况1：小鸡正在吃饭且饲料充足
             if (isEating) {
-                if (useBigEaterTool.getValue() 
-                    && foodStock >= 360 
-                    && useFarmTool(ownerFarmId, ToolType.BIG_EATER_TOOL)) 
-                {
-                    JSONObject syncResponse = syncAnimalStatus(
-                        ownerFarmId, 
-                        "SYNC_USE_BIG_EATER_TOOL", 
-                        "QUERY_EMOTION_INFO|QUERY_FARM_INFO|QUERY_USER_INFO"
-                    );
+                if (foodStock > 180 && useBigEaterTool.getValue() && foodStock >= 180 
+                    && useFarmTool(ownerFarmId, ToolType.BIG_EATER_TOOL)) {
                     
-                    if (syncResponse != null) {
-                        parseSyncAnimalStatusResponse(syncResponse);
+                    JSONObject jo = syncAnimalStatus(ownerFarmId, "SYNC_USE_BIG_EATER_TOOL", 
+                        "QUERY_EMOTION_INFO|QUERY_FARM_INFO|QUERY_USER_INFO");
+                    if (jo != null) {
+                        parseSyncAnimalStatusResponse(jo);
                     }
-                    Log.farm("小鸡正在吃饭，使用加饭卡🥣追加投喂🐥成功#剩余饲料" + foodStock + "g");
+                    Log.farm("使用加饭卡🥣投喂🐥成功#剩余饲料" + foodStock + "g");
                     return true;
                 } else {
-                    Log.record(TAG, "小鸡正在吃饭，但加饭卡条件不满足（饲料不够或加饭卡不足）");
+                    Log.record(TAG, "加饭卡使用条件不满足");
+                    return false;
                 }
-            }
-            
-            // 4. 小鸡不在吃饭状态，执行普通喂食
-            JSONObject feedResponse = new JSONObject(AntFarmRpcCall.feedAnimal(farmId));
-            int consumedFood = foodStock - feedResponse.getInt("foodStock");
-            add2FoodStock(-consumedFood);
-            Log.farm("投喂小鸡🥣[" + consumedFood + "g]#剩余" + foodStock + "g");
-            
-            // 5. 普通喂食后，检查是否满足加饭卡条件
-            if (useBigEaterTool.getValue() 
-                && foodStock >= 180 
-                && ownerAnimal != null 
-                && AnimalFeedStatus.EATING.name().equals(ownerAnimal.animalFeedStatus))
-            {
-                if (useFarmTool(ownerFarmId, ToolType.BIG_EATER_TOOL)) {
-                    JSONObject syncResponse = syncAnimalStatus(
-                        ownerFarmId, 
-                        "POST_FEED_USE_TOOL", 
-                        "QUERY_EMOTION_INFO|QUERY_FARM_INFO|QUERY_USER_INFO"
-                    );
+            } 
+            // 情况2：小鸡未在吃饭
+            else {
+                // 先执行普通喂食
+                JSONObject jo = new JSONObject(AntFarmRpcCall.feedAnimal(farmId));
+                int feedFood = foodStock - jo.getInt("foodStock");
+                add2FoodStock(-feedFood);
+                Log.farm("投喂小鸡🥣[" + feedFood + "g]#剩余" + foodStock + "g");
+                
+                // 普通喂食后检查是否满足加饭卡条件
+                if (foodStock > 180 && useBigEaterTool.getValue() && foodStock >= 180 
+                    && useFarmTool(ownerFarmId, ToolType.BIG_EATER_TOOL)) {
                     
-                    if (syncResponse != null) {
-                        parseSyncAnimalStatusResponse(syncResponse);
+                    JSONObject joSync = syncAnimalStatus(ownerFarmId, "SYNC_USE_BIG_EATER_TOOL", 
+                        "QUERY_EMOTION_INFO|QUERY_FARM_INFO|QUERY_USER_INFO");
+                    if (joSync != null) {
+                        parseSyncAnimalStatusResponse(joSync);
                     }
-                    Log.farm("普通喂食后，使用加饭卡🥣追加投喂🐥成功#剩余饲料" + foodStock + "g");
-                } else {
-                    Log.record(TAG, "普通喂食后，加饭卡使用失败（饲料不够或加饭卡不足）");
+                    Log.farm("追加使用加饭卡🥣成功#剩余饲料" + foodStock + "g");
                 }
+                return true;
             }
-            
-            return true;
-            
         } catch (Throwable t) {
             Log.printStackTrace(TAG, "feedAnimal err:", t);
-            return false;
         }
+        return false;
     }
-
+    
     /**
      * 加载持有道具信息
      */
