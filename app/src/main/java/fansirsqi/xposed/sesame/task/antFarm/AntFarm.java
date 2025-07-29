@@ -1530,6 +1530,16 @@ public class AntFarm extends ModelTask {
         try {
             if (foodStock < 180) {
                 Log.record(TAG, "喂鸡饲料不足");
+                
+            // 753行也有加饭卡功能（二选一）
+//            } else if (useBigEaterTool.getValue() && foodStock >= 180 && useFarmTool(ownerFarmId, ToolType.BIG_EATER_TOOL)) {
+//                JSONObject jo = syncAnimalStatus(ownerFarmId, "SYNC_USE_BIG_EATER_TOOL", "QUERY_EMOTION_INFO|QUERY_FARM_INFO|QUERY_USER_INFO");
+//                if (jo != null) {
+//                    parseSyncAnimalStatusResponse(jo);
+//                }
+//                Log.farm("使用加饭卡🥣投喂🐥成功#剩余饲料" + foodStock + "g");
+//                return true;
+                
             } else {
                 JSONObject jo = new JSONObject(AntFarmRpcCall.feedAnimal(farmId));
                 int feedFood = foodStock - jo.getInt("foodStock");
