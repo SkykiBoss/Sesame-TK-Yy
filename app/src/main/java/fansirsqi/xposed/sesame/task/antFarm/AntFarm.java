@@ -759,7 +759,7 @@ public class AntFarm extends ModelTask {
                 GlobalThreadPools.sleep(500);
                 needReload = true;
             } else {
-                Log.farm("⚠️ 使用「加饭卡」失败（卡片或饲料不足）");
+                Log.farm("⚠️使用「加饭卡」失败（卡片饲料不足或已在使用中～）");
             }
         }
         
