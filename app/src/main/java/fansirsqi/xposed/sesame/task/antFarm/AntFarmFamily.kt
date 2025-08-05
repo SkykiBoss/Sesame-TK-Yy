@@ -361,15 +361,13 @@ data object AntFarmFamily {
                 val ariverRpcTraceId = resp1.getString("ariverRpcTraceId")
                 val resp2 = JSONObject(AntFarmRpcCall.deliverContentExpand(userIds, ariverRpcTraceId))
                 if (ResChecker.checkRes(TAG, resp2)) {
-                    val deliverId = resp2.getString("deliverId")
-                    val resp3 = JSONObject(AntFarmRpcCall.QueryExpandContent(deliverId))
+                    GlobalThreadPools.sleep(500)
+                    val content = resp1.getString("content")
+                    val deliverId = resp1.getString("deliverId")
+                    val resp3 = JSONObject(AntFarmRpcCall.deliverMsgSend(groupId, userIds, content, deliverId))
                     if (ResChecker.checkRes(TAG, resp3)) {
-                        val content = resp3.getString("content")
-                        val resp4 = JSONObject(AntFarmRpcCall.deliverMsgSend(groupId, userIds, content, deliverId))
-                        if (ResChecker.checkRes(TAG, resp4)) {
-                            Log.farm("家庭任务🏠道早安: $content 🌈")
-                            Status.setFlagToday("antFarm::deliverMsgSend")
-                        }
+                        Log.farm("家庭任务🏠道早安: $content 🌈")
+                        Status.setFlagToday("antFarm::deliverMsgSend")
                     }
                 }
             }
