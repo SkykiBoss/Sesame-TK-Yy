@@ -13,8 +13,10 @@ import fansirsqi.xposed.sesame.task.reserve.Reserve
 import fansirsqi.xposed.sesame.task.antMember.AntMember
 import fansirsqi.xposed.sesame.task.antOrchard.AntOrchard
 import fansirsqi.xposed.sesame.task.antStall.AntStall
-import fansirsqi.xposed.sesame.task.consumeGold.ConsumeGold
 import fansirsqi.xposed.sesame.task.greenFinance.GreenFinance
+//import fansirsqi.xposed.sesame.task.consumeGold.ConsumeGold
+//import fansirsqi.xposed.sesame.task.antBookRead.AntBookRead
+//import fansirsqi.xposed.sesame.task.omegakoiTown.OmegakoiTown
 
 object ModelOrder {
     private val array = arrayOf(
