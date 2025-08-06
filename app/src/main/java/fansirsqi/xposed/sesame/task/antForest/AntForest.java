@@ -1,5 +1,8 @@
 package fansirsqi.xposed.sesame.task.antForest;
 
+import static fansirsqi.xposed.sesame.task.antForest.ForestUtil.hasBombCard;
+import static fansirsqi.xposed.sesame.task.antForest.ForestUtil.hasShield;
+
 import androidx.annotation.NonNull;
 
 import org.json.JSONArray;
@@ -9,6 +12,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
@@ -27,7 +31,6 @@ import fansirsqi.xposed.sesame.data.Statistics;
 import fansirsqi.xposed.sesame.data.Status;
 import fansirsqi.xposed.sesame.entity.AlipayUser;
 import fansirsqi.xposed.sesame.entity.CollectEnergyEntity;
-import fansirsqi.xposed.sesame.entity.FriendWatch;
 import fansirsqi.xposed.sesame.entity.KVMap;
 import fansirsqi.xposed.sesame.entity.OtherEntityProvider;
 import fansirsqi.xposed.sesame.entity.RpcEntity;
@@ -110,6 +113,7 @@ public class AntForest extends ModelTask {
     private final Object doubleCardLockObj = new Object();
     private BooleanModelField expiredEnergy; // 收取过期能量
     private BooleanModelField collectEnergy;
+    private BooleanModelField pkEnergy; // PK能量
     private BooleanModelField energyRain;
     private IntegerModelField advanceTime;
     private IntegerModelField tryCount;
@@ -135,7 +139,6 @@ public class AntForest extends ModelTask {
     private ChoiceModelField helpFriendCollectType;
     private SelectModelField helpFriendCollectList;
     private SelectAndCountModelField vitalityExchangeList;
-    private SelectAndCountModelField vitalityExchangeMaxList;
     private IntegerModelField returnWater33;
     private IntegerModelField returnWater18;
     private IntegerModelField returnWater10;
@@ -893,7 +896,6 @@ public class AntForest extends ModelTask {
                 Log.debug(TAG, "载入失败: " + userHomeObj.getString("resultDesc"));
                 return userHomeObj;
             }
-
             long serverTime = userHomeObj.getLong("now");
             boolean isSelf = Objects.equals(userId, selfId);
             String userName, bizType;
@@ -908,9 +910,7 @@ public class AntForest extends ModelTask {
                 Log.runtime(TAG, userName + "已缓存，跳过");
                 return userHomeObj;
             } //该次已缓存，标记为已收取
-
             Log.record(TAG, "进入[" + userName + "]的蚂蚁森林");
-
             // 3. 判断是否允许收取能量
             if (!collectEnergy.getValue() || dontCollectMap.contains(userId)) {
                 return userHomeObj;
@@ -927,22 +927,16 @@ public class AntForest extends ModelTask {
                     return userHomeObj;
                 }
             }
-
             // 5. 获取所有可收集的能量球
             List<Long> availableBubbles = new ArrayList<>();
             List<Pair<Long, Long>> waitingBubbles = new ArrayList<>();
-
             extractBubbleInfo(userHomeObj, serverTime, availableBubbles, waitingBubbles, userId);
-
             // 6. 添加蹲点任务（等待成熟）
             scheduleWaitingBubbles(userId, waitingBubbles);
-
             // 7. 收集可直接收取的能量
             collectAvailableEnergy(userId, userHomeObj, availableBubbles, bizType);
             cacheCollectedMap.put(userId, userName);
-
             return userHomeObj;
-
         } catch (JSONException | NullPointerException e) {
             Log.printStackTrace(TAG, "collectUserEnergy JSON解析错误", e);
             return null;
@@ -1021,9 +1015,7 @@ public class AntForest extends ModelTask {
      */
     private void collectAvailableEnergy(String userId, JSONObject userHomeObj, List<Long> bubbleIds, String bizType) throws JSONException {
         if (bubbleIds.isEmpty()) return;
-
         boolean isBatchCollect = batchRobEnergy.getValue();
-
         if (isBatchCollect) {
             for (int i = 0; i < bubbleIds.size(); i += MAX_BATCH_SIZE) {
                 List<Long> subList = bubbleIds.subList(i, Math.min(i + MAX_BATCH_SIZE, bubbleIds.size()));
@@ -1083,24 +1075,19 @@ public class AntForest extends ModelTask {
                 Log.error(TAG, "获取好友排行榜失败: " + friendsObject.optString("resultDesc"));
                 return;
             }
-
             // 处理排名靠前的好友（通常自己也在其中） 20个
             collectUserEnergy(friendsObject, "");
-
             // 分批处理其他好友（从第20位开始）
             JSONArray totalDatas = friendsObject.optJSONArray("totalDatas");
             if (totalDatas == null || totalDatas.length() == 0) {
                 Log.runtime(TAG, "好友排行榜为空，跳过");
                 return;
             }
-
             List<String> idList = new ArrayList<>();
             for (int pos = 20; pos < totalDatas.length(); pos++) {
                 JSONObject friend = totalDatas.getJSONObject(pos);
                 String userId = friend.getString("userId");
-
                 if (Objects.equals(userId, selfId)) continue; //如果是自己则跳过
-
                 idList.add(userId);
                 if (idList.size() == 20) {
                     processLastdEnergy(idList, "");//20个id 一次处理
@@ -1110,9 +1097,7 @@ public class AntForest extends ModelTask {
             if (!idList.isEmpty()) {
                 processLastdEnergy(idList, "");
             }
-
             Log.runtime(TAG, "收取好友能量完成！");
-
         } catch (JSONException e) {
             Log.printStackTrace(TAG, "解析好友排行榜 JSON 异常", e);
         } catch (Throwable t) {
@@ -1122,7 +1107,7 @@ public class AntForest extends ModelTask {
 
 
     /**
-     * * 收取排名靠后的能量
+     * 收取排名靠后的能量
      *
      * @param userIds 用户id列表
      */
@@ -1184,7 +1169,7 @@ public class AntForest extends ModelTask {
                     userHomeObj = collectEnergy(userId, queryFriendHome(userId, null), "friend");
                 }
 
-            if (needHelpProtect) {
+                if (needHelpProtect) {
                     boolean isProtected = helpFriendCollectList.getValue().contains(userId);
                     if (helpFriendCollectType.getValue() != HelpFriendCollectType.HELP) {
                         isProtected = !isProtected;
@@ -1198,6 +1183,7 @@ public class AntForest extends ModelTask {
                         }
                     }
                 }
+
                 // 尝试领取礼物盒
                 if (needCollectGiftBox) {
                     if (userHomeObj == null) {
@@ -1228,9 +1214,10 @@ public class AntForest extends ModelTask {
                     collectEnergy(userId, queryFriendHome(userId, "PKContest"), "pk");
                 }
             }
-
         } catch (JSONException e) {
             Log.printStackTrace(TAG, "处理单个好友[" + obj.optString("userId") + "]出错", e);
+        } catch (Exception e) {
+            Log.printStackTrace(TAG, "处理好友异常", e);
         }
     }
 
@@ -1242,7 +1229,6 @@ public class AntForest extends ModelTask {
     private void collectUserEnergy(JSONObject friendsObject, String flag) {
         try {
             if (errorWait) return;
-
             JSONArray friendRanking = friendsObject.optJSONArray("friendRanking");
             if (friendRanking == null) {
                 Log.runtime(TAG, "无好友数据可处理");
@@ -2636,7 +2622,7 @@ public class AntForest extends ModelTask {
                 }
                 Log.record(TAG, "执行蹲点收取⏰ 任务ID " + getId() + " [" + userName + "]" + "时差[" + averageInteger + "]ms" + "提前[" + advanceTimeInt + "]ms");
                 collectEnergy(new CollectEnergyEntity(userId, null, AntForestRpcCall.energyRpcEntity("", userId, bubbleId)), true);
-             };
+            };
         }
     }
 

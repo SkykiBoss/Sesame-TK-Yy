@@ -1,9 +1,15 @@
 package fansirsqi.xposed.sesame.task.antDodo;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
+
+import fansirsqi.xposed.sesame.data.DataCache;
 import fansirsqi.xposed.sesame.entity.AlipayUser;
 import fansirsqi.xposed.sesame.model.BaseModel;
 import fansirsqi.xposed.sesame.model.ModelFields;
@@ -250,12 +256,13 @@ public class AntDodo extends ModelTask {
                                     Log.record(TAG,"完成任务失败，" + taskTitle); // 记录完成任务失败信息
                                     taskList.add(taskType);
                                 }
+
                             }
                         }
                         GlobalThreadPools.sleep(500);
                     }
                 }
-               if (!doubleCheck) break;
+                if (!doubleCheck) break;
                 DataCache.INSTANCE.saveData("forestTaskList", taskList);
             }
         } catch (JSONException e) {
