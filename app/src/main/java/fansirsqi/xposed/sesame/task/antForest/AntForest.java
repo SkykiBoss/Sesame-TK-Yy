@@ -113,7 +113,6 @@ public class AntForest extends ModelTask {
     private final Object doubleCardLockObj = new Object();
     private BooleanModelField expiredEnergy; // 收取过期能量
     private BooleanModelField collectEnergy;
-    private BooleanModelField pkEnergy; // PK能量
     private BooleanModelField energyRain;
     private IntegerModelField advanceTime;
     private IntegerModelField tryCount;
