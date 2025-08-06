@@ -88,7 +88,7 @@ fun DeviceInfoCard(info: Map<String, String>) {
             Text(
                 text = "Statement：本APP是为学习研究用，请勿倒卖🪧",
                 fontSize = 13.sp,
-                color = Color.Red
+                return Color.Red
                 )
         }
     }
