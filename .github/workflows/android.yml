@@ -160,10 +160,10 @@ jobs:
             *下载说明:*
               *Normal* 为正常版本，适用于 `Android 8.0` 及以上的系统  
               *Compatible* 为兼容版本，适用于 `Android 7.0` 及以下的系统，最低支持 `Android 5.1`
-            Normal: `${{ steps.extract_info.outputs.normal_file }}`
-            Compatible: `${{ steps.extract_info.outputs.compatible_file }}`
+            
             Branch: `${{ github.ref_name }}`
             Triggered by: `${{ github.actor }}`
+            
             by `${{ github.event.head_commit.author.name }}`
             See commit detail [here](${{ github.event.head_commit.url }})
         run: |
