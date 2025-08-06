@@ -175,7 +175,6 @@ public class ApplicationHook implements IXposedHookLoadPackage {
             } else {
                 Detector.INSTANCE.loadLibrary(soFile.getName().replace(".so", "").replace("lib", ""));
             }
-//            Log.runtime(TAG, "Loading " + soFile.getName() + " from :" + soPath);
         } catch (Exception e) {
             Log.error(TAG, "载入so库失败！！");
             Log.printStackTrace(e);
@@ -285,7 +284,6 @@ public class ApplicationHook implements IXposedHookLoadPackage {
                         new XC_MethodHook() {
                             @Override
                             protected void afterHookedMethod(MethodHookParam param) {
- //                               mainHandler = new Handler(Looper.getMainLooper());
                                 Service appService = (Service) param.thisObject;
                                 if (!General.CURRENT_USING_SERVICE.equals(appService.getClass().getCanonicalName())) {
                                     return;
@@ -346,7 +344,6 @@ public class ApplicationHook implements IXposedHookLoadPackage {
                         }
 
                 );
-//                execDelayedHandler(BaseModel.getCheckInterval().getValue());
                 Log.runtime(TAG, "hook service onCreate successfully");
             } catch (Throwable t) {
                 Log.runtime(TAG, "hook service onCreate err");
