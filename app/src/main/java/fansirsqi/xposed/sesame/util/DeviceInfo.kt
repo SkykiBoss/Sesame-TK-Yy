@@ -28,6 +28,7 @@ import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import fansirsqi.xposed.sesame.BuildConfig
+import androidx.compose.ui.graphics.Color
 
 class PreviewDeviceInfoProvider : PreviewParameterProvider<Map<String, String>> {
     override val values: Sequence<Map<String, String>> = sequenceOf(
@@ -88,8 +89,8 @@ fun DeviceInfoCard(info: Map<String, String>) {
             Text(
                 text = "Statement：本APP是为学习研究用，请勿倒卖🪧",
                 fontSize = 13.sp,
-                return Color.Red
-                )
+                color = Color.Red // 明确指定颜色
+             )
         }
     }
 }
