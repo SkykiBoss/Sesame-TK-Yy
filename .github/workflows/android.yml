@@ -3,9 +3,9 @@ run-name: 📦 ${{ github.actor }} Pack ${{ github.ref_name }} Sesame-TK CI
 
 on:
   push:
-    branches: ["main"]
+    branches: ["backups_250806_1"]
   pull_request:
-    branches: ["main"]
+    branches: ["backups_250806_1"]
   release:
     types: [published]
   workflow_dispatch:
