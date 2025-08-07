@@ -17,7 +17,6 @@ object ViewAppInfo {
     var appVersion: String = ""
     var appBuildTarget: String = ""
     var appBuildNumber: String = ""
-    var androidId: String = ""
     //var veriftag: Boolean = false
     var veriftag: Boolean = true
     var verifyId: String = ""
