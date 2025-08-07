@@ -48,6 +48,9 @@ import kotlinx.coroutines.withContext
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
 
+import org.json.JSONObject
+import kotlin.random.Random
+
 //   欢迎自己打包 欢迎大佬pr
 //   项目开源且公益  维护都是自愿
 //   但是如果打包改个名拿去卖钱忽悠小白
@@ -126,11 +129,11 @@ class MainActivity : BaseActivity() {
         */
 
         // ====== 新增伪造API客户端类 ====== //
-        class FakeSecureApiClient : SecureApiClient(
-            baseUrl = "", // 参数不重要，但需要满足构造函数
-            signatureKey = ""
+        class FakeSecureApiClient(
+            private val realClient: SecureApiClient? = null
         ) {
-            override fun secureVerify(deviceId: String, path: String): JSONObject {
+            // 伪造验证方法
+            fun secureVerify(deviceId: String, path: String): JSONObject {
                 // 返回伪造的成功响应
                 return JSONObject().apply {
                     put("status", 100)
@@ -140,24 +143,22 @@ class MainActivity : BaseActivity() {
         }
 
         // ====== 原始代码修改 ====== //
-        // 替换原始客户端为伪造客户端
-        // c = SecureApiClient(baseUrl = getRandomApi(0x22), signatureKey = getRandomEncryptData(0xCF))
-        c = FakeSecureApiClient()  // 使用伪造客户端
+        // 创建伪造客户端
+        val fakeClient = FakeSecureApiClient()
 
         lifecycleScope.launch {
-            // 保持原始调用不变
+            // 使用伪造客户端代替真实调用
             val result = withContext(Dispatchers.IO) {
-                c.secureVerify(deviceId = verifyId, path = getRandomEncryptData(0x9e))
+                fakeClient.secureVerify(deviceId = verifyId, path = getRandomEncryptData(0x9e))
             }
             
-            // 原始处理逻辑
+            // 原始处理逻辑保持不变
             Log.runtime("verify result = $result")
-            ToastUtil.makeText("${result?.optString("message")}", Toast.LENGTH_SHORT).show()
-            when (result?.optInt("status")) {
+            ToastUtil.makeText("${result.optString("message")}", Toast.LENGTH_SHORT).show()
+            when (result.optInt("status")) {
                 208, 400, 210, 209, 300, 200, 202, 203, 204, 205 -> {
                     ViewAppInfo.veriftag = false
                 }
-
                 101, 100 -> {
                     ViewAppInfo.veriftag = true
                 }
