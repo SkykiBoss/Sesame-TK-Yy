@@ -138,7 +138,6 @@ object AssetUtil {
             Log.error(TAG, "Failed to copy ${sourceFile.name} of storage: ${e.message}")
             return null
         }
-
     }
 
 
