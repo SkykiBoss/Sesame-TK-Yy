@@ -48,8 +48,6 @@ import kotlinx.coroutines.withContext
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
 
-import org.json.JSONObject
-import kotlin.random.Random
 
 //   欢迎自己打包 欢迎大佬pr
 //   项目开源且公益  维护都是自愿
@@ -128,19 +126,12 @@ class MainActivity : BaseActivity() {
         }
         */
 
-        // ====== 新增伪造API客户端类 ====== //
+        // ====== 跳过验证 ====== //
         c = SecureApiClient(baseUrl = getRandomApi(0x22), signatureKey = getRandomEncryptData(0xCF))
         lifecycleScope.launch {
-            // ====== 绕过开始 ====== //
-            // 完全跳过网络验证请求
-            // 伪造验证成功日志
-            Log.runtime("verify result = {\"status\":100,\"message\":\"Verification successful\"}")
-            
-            // 显示伪造的成功提示
-            ToastUtil.makeText("Verification successful", Toast.LENGTH_SHORT).show()
-            
-            // 直接设置验证通过标志
+            // 直接设置验证通过
             ViewAppInfo.veriftag = true
+        }
         // ====== 结束 ====== //
 
     }
