@@ -752,7 +752,6 @@ public class AntFarm extends ModelTask {
         
         // 3. 使用加饭卡（仅当正在吃饭且开启配置）
         if (useBigEaterTool.getValue() && AnimalFeedStatus.EATING.name().equals(ownerAnimal.animalFeedStatus)) {
-            // 使用内部枚举调用
             boolean result = useFarmTool(ownerFarmId, AntFarm.ToolType.BIG_EATER_TOOL);
             if (result) {
                 Log.farm("追加使用🍚「加饭卡」🥣成功#剩余饲料" + foodStock + "g");
