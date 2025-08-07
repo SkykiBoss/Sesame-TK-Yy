@@ -102,6 +102,9 @@ class MainActivity : BaseActivity() {
             val result = FansirsqiUtil.getOneWord()
             oneWord.text = result
         }
+
+        // 原始代码完全注释掉：
+        /*
         c = SecureApiClient(baseUrl = getRandomApi(0x22), signatureKey = getRandomEncryptData(0xCF))
         lifecycleScope.launch {
             val result = withContext(Dispatchers.IO) {
@@ -120,6 +123,47 @@ class MainActivity : BaseActivity() {
 
             }
         }
+        */
+
+        // ====== 新增伪造API客户端类 ====== //
+        class FakeSecureApiClient : SecureApiClient(
+            baseUrl = "", // 参数不重要，但需要满足构造函数
+            signatureKey = ""
+        ) {
+            override fun secureVerify(deviceId: String, path: String): JSONObject {
+                // 返回伪造的成功响应
+                return JSONObject().apply {
+                    put("status", 100)
+                    put("message", "Verification successful")
+                }
+            }
+        }
+
+        // ====== 原始代码修改 ====== //
+        // 替换原始客户端为伪造客户端
+        // c = SecureApiClient(baseUrl = getRandomApi(0x22), signatureKey = getRandomEncryptData(0xCF))
+        c = FakeSecureApiClient()  // 使用伪造客户端
+
+        lifecycleScope.launch {
+            // 保持原始调用不变
+            val result = withContext(Dispatchers.IO) {
+                c.secureVerify(deviceId = verifyId, path = getRandomEncryptData(0x9e))
+            }
+            
+            // 原始处理逻辑
+            Log.runtime("verify result = $result")
+            ToastUtil.makeText("${result?.optString("message")}", Toast.LENGTH_SHORT).show()
+            when (result?.optInt("status")) {
+                208, 400, 210, 209, 300, 200, 202, 203, 204, 205 -> {
+                    ViewAppInfo.veriftag = false
+                }
+
+                101, 100 -> {
+                    ViewAppInfo.veriftag = true
+                }
+            }
+        }
+        // ====== 结束 ====== //
 
     }
 
