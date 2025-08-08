@@ -127,7 +127,8 @@ jobs:
           COMPATIBLE_FILE: ${{ steps.extract_apks.outputs.signed_compatible }}
           COMMIT_MESSAGE: |+
             *New push to github\!*         
-            ```${{ github.event.head_commit.message }}
+            ``` 
+            ${{ github.event.head_commit.message }}
             ```Branch: `${{ github.ref_name }}`
             *下载说明:*
               *Normal* 为正常版本，适用于 `Android 8.0` 及以上的系统  
