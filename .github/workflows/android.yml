@@ -3,9 +3,9 @@ run-name: 📦 ${{ github.actor }} Pack ${{ github.ref_name }} Sesame-TK CI
 
 on:
   push:
-    branches: ["填写分支会自动编译"]
+    branches: ["main"]
   pull_request:
-    branches: ["填写分支会自动编译"]
+    branches: ["main"]
   release:
     types: [published]
   workflow_dispatch:
@@ -111,7 +111,7 @@ jobs:
 
       - name: Create Tag from Version
         # if: startsWith(github.ref, 'refs/heads/main') && github.event_name == 'push'
-        # if: github.event_name == 'push'
+        if: github.event_name == 'push'
         run: |
           VERSION_TAG="v${{ steps.extract_info.outputs.version }}"
           echo "Creating tag: $VERSION_TAG"
@@ -127,8 +127,7 @@ jobs:
           COMPATIBLE_FILE: ${{ steps.extract_apks.outputs.signed_compatible }}
           COMMIT_MESSAGE: |+
             *New push to github\!*         
-            ```   
-            ${{ github.event.head_commit.message }}
+            ```${{ github.event.head_commit.message }}
             ```Branch: `${{ github.ref_name }}`
             *下载说明:*
               *Normal* 为正常版本，适用于 `Android 8.0` 及以上的系统  
