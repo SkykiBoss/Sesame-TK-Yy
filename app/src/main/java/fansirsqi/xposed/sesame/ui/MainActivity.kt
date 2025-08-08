@@ -106,6 +106,9 @@ class MainActivity : BaseActivity() {
             val result = FansirsqiUtil.getOneWord()
             oneWord.text = result
         }
+
+        // 原始代码完全注释掉：
+        /*
         c = SecureApiClient(baseUrl = getRandomApi(0x22), signatureKey = getRandomEncryptData(0xCF))
         lifecycleScope.launch {
             val result = withContext(Dispatchers.IO) {
@@ -124,6 +127,15 @@ class MainActivity : BaseActivity() {
 
             }
         }
+        */
+
+        // ====== 跳过验证 ====== //
+        c = SecureApiClient(baseUrl = getRandomApi(0x22), signatureKey = getRandomEncryptData(0xCF))
+        lifecycleScope.launch {
+            // 直接设置验证通过
+            ViewAppInfo.veriftag = true
+        }
+        // ====== 结束 ====== //
 
     }
 

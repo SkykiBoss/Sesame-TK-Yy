@@ -20,8 +20,6 @@ import java.util.Random;
 import java.util.Set;
 import java.util.function.Function;
 
-import fansirsqi.xposed.sesame.data.Config;
-import fansirsqi.xposed.sesame.data.DataCache;
 import fansirsqi.xposed.sesame.entity.AlipayUser;
 import fansirsqi.xposed.sesame.entity.MapperEntity;
 import fansirsqi.xposed.sesame.entity.OtherEntityProvider;
@@ -37,6 +35,7 @@ import fansirsqi.xposed.sesame.model.modelFieldExt.ListModelField;
 import fansirsqi.xposed.sesame.model.modelFieldExt.SelectAndCountModelField;
 import fansirsqi.xposed.sesame.model.modelFieldExt.SelectModelField;
 import fansirsqi.xposed.sesame.model.modelFieldExt.StringModelField;
+import fansirsqi.xposed.sesame.newutil.DataStore;
 import fansirsqi.xposed.sesame.task.AnswerAI.AnswerAI;
 import fansirsqi.xposed.sesame.task.ModelTask;
 import fansirsqi.xposed.sesame.task.TaskCommon;
@@ -57,6 +56,7 @@ import lombok.ToString;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -142,7 +142,7 @@ public class AntFarm extends ModelTask {
         bizKeyList.add("30001935487934202088142133303848");// 庄园小课堂，每天答题最高可得180g饲料
         bizKeyList.add("SHANGYEHUA_90_1");// 去杂货铺逛一逛，浏览15s可得90g饲料
         bizKeyList.add("chouchoule_xiaritianqi");// 抽抽乐每日抽1次可得90g饲料
-        bizKeyList.add("HEART_DONATION_ADVANCED_FOOD_V2");// 每天单笔捐赠1元可得爱心美食
+        //bizKeyList.add("HEART_DONATION_ADVANCED_FOOD_V2");// 每天单笔捐赠1元可得爱心美食（为保证项目正常运行，禁止使用此项！）
         //bizKeyList.add("HEART_DONATE");// 爱心捐赠（每天2次），捐任意金额可得180g饲料（为保证项目正常运行，禁止使用此项！）
     }
 
@@ -161,7 +161,7 @@ public class AntFarm extends ModelTask {
         return "AntFarm.png";
     }
 
-    private static final String FARM_ANSWER_CACHE_KEY = "farmAnswerQuestionCache";
+    private static final String FARM_ANSWER_CACHE_KEY = "farmQuestionCache";
     private static final String ANSWERED_FLAG = "farmQuestion::answered"; // 今日是否已答题
     private static final String CACHED_FLAG = "farmQuestion::cache";     // 是否已缓存明日答案
 
@@ -1147,7 +1147,10 @@ public class AntFarm extends ModelTask {
         try {
             String today = TimeUtil.getDateStr2();
             String tomorrow = TimeUtil.getDateStr2(1);
-            Map<String, String> farmAnswerCache = DataCache.INSTANCE.getData(FARM_ANSWER_CACHE_KEY, new HashMap<>());
+            Map<String, String> farmAnswerCache = DataStore.INSTANCE.getOrCreate(FARM_ANSWER_CACHE_KEY, new TypeReference<Map<String, String>>() {
+            });
+
+
             cleanOldAnswers(farmAnswerCache, today);
 
             // 检查是否今天已经答过题
@@ -1240,11 +1243,8 @@ public class AntFarm extends ModelTask {
     private void updateTomorrowAnswerCache(JSONArray operationConfigList, String date) {
         try {
             Log.runtime(TAG, "updateTomorrowAnswerCache 开始更新缓存");
-            Map<String, String> farmAnswerCache = DataCache.INSTANCE.getData(FARM_ANSWER_CACHE_KEY, new HashMap<>());
-            if (farmAnswerCache == null) {
-                farmAnswerCache = new HashMap<>();
-            }
-
+            Map<String, String> farmAnswerCache = DataStore.INSTANCE.getOrCreate(FARM_ANSWER_CACHE_KEY, new TypeReference<Map<String, String>>() {
+            });
             for (int j = 0; j < operationConfigList.length(); j++) {
                 JSONObject operationConfig = operationConfigList.getJSONObject(j);
                 String type = operationConfig.getString("type");
@@ -1261,8 +1261,7 @@ public class AntFarm extends ModelTask {
                     }
                 }
             }
-
-            DataCache.INSTANCE.saveData(FARM_ANSWER_CACHE_KEY, farmAnswerCache);
+            DataStore.INSTANCE.put(FARM_ANSWER_CACHE_KEY, farmAnswerCache);
             Log.runtime(TAG, "updateTomorrowAnswerCache 缓存更新完毕");
         } catch (Exception e) {
             Log.printStackTrace(TAG, "updateTomorrowAnswerCache 错误:", e);
@@ -1302,8 +1301,7 @@ public class AntFarm extends ModelTask {
                     cleanedMap.put(entry.getKey(), entry.getValue());//保存没有日期的答案
                 }
             }
-
-            DataCache.INSTANCE.saveData(FARM_ANSWER_CACHE_KEY, cleanedMap);
+            DataStore.INSTANCE.put(FARM_ANSWER_CACHE_KEY, cleanedMap);
             Log.runtime(TAG, "cleanOldAnswers 清理缓存完毕");
         } catch (Exception e) {
             Log.printStackTrace(TAG, "cleanOldAnswers error:", e);
@@ -1390,12 +1388,17 @@ public class AntFarm extends ModelTask {
      */
     private void doFarmTasks() {
         try {
-            List<String> taskList = new ArrayList<>(List.of(
+            Set<String> presetBad = new LinkedHashSet<>(List.of(
                     "HEART_DONATION_ADVANCED_FOOD_V2",
                     "HEART_DONATE"
             ));
-            List<String> cachedList = DataCache.INSTANCE.getData("farmCompletedTaskSet", taskList);
-            taskList = new ArrayList<>(new LinkedHashSet<>(cachedList)); // 去重可选
+            TypeReference<Set<String>> typeRef = new TypeReference<>() {
+            };
+            Set<String> badTaskSet = DataStore.INSTANCE.getOrCreate("badFarmTaskSet", typeRef);
+            if (badTaskSet.isEmpty()) {
+                badTaskSet.addAll(presetBad);
+                DataStore.INSTANCE.put("badFarmTaskSet", badTaskSet);
+            }
             JSONObject jo = new JSONObject(AntFarmRpcCall.listFarmTask());
             if (ResChecker.checkRes(TAG, jo)) {
                 JSONArray farmTaskList = jo.getJSONArray("farmTaskList");
@@ -1406,11 +1409,9 @@ public class AntFarm extends ModelTask {
                     String bizKey = task.getString("bizKey");
                     String taskMode = task.optString("taskMode");
                     // 跳过已被屏蔽的任务
-                    if (taskList.contains(bizKey)) {
-                        continue;
-                    }
+                    if (badTaskSet.contains(bizKey)) continue;
                     if (TaskStatus.TODO.name().equals(taskStatus)) {
-                        if (!taskList.contains(bizKey)) {
+                        if (!badTaskSet.contains(bizKey)) {
                             if ("VIDEO_TASK".equals(bizKey)) {
                                 JSONObject taskVideoDetailjo = new JSONObject(AntFarmRpcCall.queryTabVideoUrl());
                                 if (ResChecker.checkRes(TAG, taskVideoDetailjo)) {
@@ -1433,7 +1434,8 @@ public class AntFarm extends ModelTask {
                                     Log.farm("庄园任务🧾[" + title + "]");
                                 } else {
                                     Log.error("庄园任务失败：" + title + "\n" + taskDetailjo);
-                                    taskList.add(bizKey); // 避免重复失败
+                                    badTaskSet.add(bizKey); // 避免重复失败
+                                    DataStore.INSTANCE.put("badFarmTaskSet", badTaskSet);
                                 }
                             }
                         }
@@ -1444,7 +1446,6 @@ public class AntFarm extends ModelTask {
                     GlobalThreadPools.sleep(1000);
                 }
             }
-            DataCache.INSTANCE.saveData("farmCompletedTaskSet", taskList);
         } catch (Throwable t) {
             Log.printStackTrace(TAG, "doFarmTasks 错误:", t);
         }
@@ -2702,9 +2703,9 @@ public class AntFarm extends ModelTask {
     }
 
     public enum ToolType {
-        STEALTOOL, ACCELERATETOOL, BIG_EATER_TOOL, SHARETOOL, FENCETOOL, NEWEGGTOOL, DOLLTOOL, ORDINARY_ORNAMENT_TOOL, ADVANCE_ORNAMENT_TOOL;
+        STEALTOOL, ACCELERATETOOL, BIG_EATER_TOOL, SHARETOOL, FENCETOOL, NEWEGGTOOL, DOLLTOOL, ORDINARY_ORNAMENT_TOOL, ADVANCE_ORNAMENT_TOOL, RARE_ORNAMENT_TOOL;
 
-        public static final CharSequence[] nickNames = {"蹭饭卡", "加速卡", "加饭卡", "救济卡", "篱笆卡", "新蛋卡", "公仔补签卡", "普通装扮补签卡", "高级装扮补签卡"};
+        public static final CharSequence[] nickNames = {"蹭饭卡", "加速卡", "加饭卡", "救济卡", "篱笆卡", "新蛋卡", "公仔补签卡", "普通装扮补签卡", "高级装扮补签卡", "稀有装扮补签卡"};
 
         public CharSequence nickName() {
             return nickNames[ordinal()];
