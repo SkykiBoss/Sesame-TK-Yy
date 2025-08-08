@@ -193,15 +193,15 @@ class MainActivity : BaseActivity() {
             }
 
             R.id.btn_friend_watch -> {
-                // ToastUtil.makeText(this, "🏗 功能施工中...", Toast.LENGTH_SHORT).show()
-                showSelectionDialog(
-                    "🤣 请选择有效账户[别选默认]",
-                    userNameArray,
-                    { index: Int -> this.goFriendWatch(index) },
-                    "😡 老子不选了，滚",
-                    {},
-                    false
-                )
+                ToastUtil.makeText(this, "🏗 功能施工中...", Toast.LENGTH_SHORT).show()
+//                showSelectionDialog(
+//                    "🤣 请选择有效账户[别选默认]",
+//                    userNameArray,
+//                    { index: Int -> this.goFriendWatch(index) },
+//                    "😡 老子不选了，滚",
+//                    {},
+//                    false
+//                )
                 return
             }
 
@@ -388,21 +388,21 @@ class MainActivity : BaseActivity() {
     }
 
 
-    private fun goFriendWatch(index: Int) {
-        val userEntity = userEntityArray[index]
-        if (userEntity != null) {
-            ListDialog.show(
-                this,
-                getString(R.string.friend_watch),
-                FriendWatch.getList(userEntity.userId),
-                SelectModelFieldFunc.newMapInstance(),
-                false,
-                ListDialog.ListType.SHOW
-            )
-        } else {
-            ToastUtil.makeText(this, "😡 别选默认！！！！！！！！", Toast.LENGTH_LONG).show()
-        }
-    }
+//    private fun goFriendWatch(index: Int) {
+//        val userEntity = userEntityArray[index]
+//        if (userEntity != null) {
+//            ListDialog.show(
+//                this,
+//                getString(R.string.friend_watch),
+//                FriendWatch.getList(userEntity.userId),
+//                SelectModelFieldFunc.newMapInstance(),
+//                false,
+//                ListDialog.ListType.SHOW
+//            )
+//        } else {
+//            ToastUtil.makeText(this, "😡 别选默认！！！！！！！！", Toast.LENGTH_LONG).show()
+//        }
+//    }
 
     private fun goSettingActivity(index: Int) {
         if (Detector.loadLibrary("checker")) {
