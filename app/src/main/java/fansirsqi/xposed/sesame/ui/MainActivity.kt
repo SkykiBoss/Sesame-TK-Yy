@@ -48,6 +48,10 @@ import kotlinx.coroutines.withContext
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
 
+import fansirsqi.xposed.sesame.entity.FriendWatch
+import fansirsqi.xposed.sesame.ui.widget.ListDialog
+import fansirsqi.xposed.sesame.model.SelectModelFieldFunc
+
 //   欢迎自己打包 欢迎大佬pr
 //   项目开源且公益  维护都是自愿
 //   但是如果打包改个名拿去卖钱忽悠小白
