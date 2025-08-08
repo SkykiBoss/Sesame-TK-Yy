@@ -127,7 +127,7 @@ jobs:
           COMPATIBLE_FILE: ${{ steps.extract_apks.outputs.signed_compatible }}
           COMMIT_MESSAGE: |+
             *New push to github\!*         
-            ``` 
+            ```
             ${{ github.event.head_commit.message }}
             ```Branch: `${{ github.ref_name }}`
             *下载说明:*
