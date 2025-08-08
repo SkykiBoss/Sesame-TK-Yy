@@ -129,7 +129,7 @@ jobs:
             *New push to github\!*         
             ```   
             ${{ github.event.head_commit.message }}
-            ```
+            ```Branch: `${{ github.ref_name }}`
             *下载说明:*
               *Normal* 为正常版本，适用于 `Android 8.0` 及以上的系统  
               *Compatible* 为兼容版本，适用于 `Android 7.0` 及以下的系统，最低支持 `Android 5.1`
