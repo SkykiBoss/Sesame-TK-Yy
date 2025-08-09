@@ -1390,9 +1390,9 @@ public class AntFarm extends ModelTask {
         try {
             Set<String> presetBad = new LinkedHashSet<>(List.of(
                     "HEART_DONATION_ADVANCED_FOOD_V2",
-                    "HEART_DONATE"
-                    "OFFLINE_PAY"
-                    "ONLINE_PAY"
+                    "HEART_DONATE",
+                    "OFFLINE_PAY",
+                    "ONLINE_PAY",
                     "SHANGOU_xiadan"
             ));
             TypeReference<Set<String>> typeRef = new TypeReference<>() {
