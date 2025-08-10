@@ -1404,11 +1404,18 @@ public class AntFarm extends ModelTask {
                 DataStore.INSTANCE.put("badFarmTaskSet", badTaskSet);
             }
             */
+            /*
             // 确保新任务被持久化,避免不必要的存储操作
             if (badTaskSet.addAll(presetBad)) {
                 DataStore.INSTANCE.put("badFarmTaskSet", badTaskSet);
             }
+            */
 
+            badTaskSet.addAll(presetBad);
+            DataStore.INSTANCE.put("badFarmTaskSet", badTaskSet);
+
+            badTaskSet.addAll(presetBad);
+            DataStore.INSTANCE.put("badFarmTaskSet", badTaskSet);
             JSONObject jo = new JSONObject(AntFarmRpcCall.listFarmTask());
             if (ResChecker.checkRes(TAG, jo)) {
                 JSONArray farmTaskList = jo.getJSONArray("farmTaskList");
