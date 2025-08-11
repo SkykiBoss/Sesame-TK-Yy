@@ -52,12 +52,27 @@ public class AntStall extends ModelTask {
         // 添加首页
         taskTypeList.add("tianjiashouye");
         // 【木兰市集】逛精选好物
-//        taskTypeList.add("ANTSTALL_XLIGHT_VARIABLE_AWARD");
+        taskTypeList.add("ANTSTALL_XLIGHT_VARIABLE_AWARD");
         // 去饿了么果园逛一逛
         taskTypeList.add("ANTSTALL_ELEME_VISIT");
         // 去点淘赚元宝提现
         taskTypeList.add("ANTSTALL_TASK_diantao202311");
+        // 去玩解压小游戏
         taskTypeList.add("ANTSTALL_TASK_nongchangleyuan");
+        // 去支付宝会员签到
+        taskTypeList.add("ANTSTALL_TASK_huiyuanjifen1");
+        // 逛羊舍喂小羊
+        taskTypeList.add("ANTSTALL_NORMAL_TBchongzhi");
+        // 职业小知识问答
+        taskTypeList.add("ANTSTALL_NORMAL_DAILY_QA");
+        // 从支付宝首页应用进入新村
+        taskTypeList.add("ANTSTALL_APP_CENTER_VISIT1");
+        // 进入淘宝芭芭农场领免费水果
+        taskTypeList.add("ANTSTALL_TASK_taojinbihuanduan");
+        // 去快手逛一逛
+        taskTypeList.add("ANTSTALL_TASK_kuaishouhuanduan");
+        // 玩一步通一关
+        taskTypeList.add("ANTSTALL_TASK_XCXYX_yibuliangbu");
     }
     @Override
     public String getName() {
