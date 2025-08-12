@@ -1389,15 +1389,17 @@ public class AntFarm extends ModelTask {
     private void doFarmTasks() {
         try {
             Set<String> presetBad = new LinkedHashSet<>(List.of(
-                    "HEART_DONATION_ADVANCED_FOOD_V2",
-                    "HEART_DONATE",
-                    "OFFLINE_PAY",
-                    "ONLINE_PAY",
-                    "SHANGOU_xiadan"
+
+                    "HEART_DONATION_ADVANCED_FOOD_V2", //香草芒果冰糕任务
+                    "HEART_DONATE", //爱心捐赠
+                    "OFFLINE_PAY", //去买秋天第一杯奶茶
+                    "ONLINE_PAY", //到店付款,线下支付
+                    "SHANGOU_xiadan" //在线支付
             ));
             TypeReference<Set<String>> typeRef = new TypeReference<>() {
             };
             Set<String> badTaskSet = DataStore.INSTANCE.getOrCreate("badFarmTaskSet", typeRef);
+
             /* 
             if (badTaskSet.isEmpty()) {
                 badTaskSet.addAll(presetBad);
