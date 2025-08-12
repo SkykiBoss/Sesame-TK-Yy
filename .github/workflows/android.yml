@@ -127,7 +127,7 @@ jobs:
               *Normal* 为正常版本，适用于 `Android 8.0` 及以上的系统
         run: |
           ESCAPED=$(python3 -c 'import json, os, urllib.parse; print(urllib.parse.quote(json.dumps(os.environ["COMMIT_MESSAGE"])))')
-          curl -v "https://api.telegram.org/bot${BOT_TOKEN}/sendMediaGroup?chat_id=${CHANNEL_ID}&media=[{"type":"document", "media":"attach://normal.apk","parse_mode":"MarkdownV2","caption":${ESCAPED}}]" \
+          curl -v "https://api.telegram.org/bot$%7BBOT_TOKEN%7D/sendMediaGroup?chat_id=$%7BCHANNEL_ID%7D&media=%5B%7B%22type%22:%22document%22,%20%22media%22:%22attach://normal.apk%22,%22parse_mode%22:%22MarkdownV2%22,%22caption%22:$%7BESCAPED%7D%7D%5D" \
             -F "normal.apk=@${NORMAL_FILE}"
 
     
