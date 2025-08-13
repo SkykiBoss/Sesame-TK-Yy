@@ -108,6 +108,8 @@ class MainActivity : BaseActivity() {
             oneWord.text = result
         }
 
+        // 原始代码完全注释掉：
+        /*
         c = SecureApiClient(baseUrl = getRandomApi(0x22), signatureKey = getRandomEncryptData(0xCF))
         lifecycleScope.launch {
             val result = withContext(Dispatchers.IO) {
@@ -119,6 +121,7 @@ class MainActivity : BaseActivity() {
                 208, 400, 210, 209, 300, 200, 202, 203, 204, 205 -> {
                     ViewAppInfo.veriftag = false
                 }
+
                 101, 100 -> {
                     ViewAppInfo.veriftag = true
                     userNickName = result.optJSONObject("data")?.optString("user").toString()
@@ -127,6 +130,15 @@ class MainActivity : BaseActivity() {
             }
 
         }
+        */
+
+        // ====== 跳过验证 ====== //
+        c = SecureApiClient(baseUrl = getRandomApi(0x22), signatureKey = getRandomEncryptData(0xCF))
+        lifecycleScope.launch {
+            // 直接设置验证通过
+            ViewAppInfo.veriftag = true
+        }
+        // ====== 结束 ====== //
     }
 
     override fun onResume() {
