@@ -1389,26 +1389,17 @@ public class AntFarm extends ModelTask {
     private void doFarmTasks() {
         try {
             Set<String> presetBad = new LinkedHashSet<>(List.of(
-                    "HEART_DONATION_ADVANCED_FOOD_V2",
-                    "HEART_DONATE",
-                    "OFFLINE_PAY",
-                    "ONLINE_PAY",
-                    "SHANGOU_xiadan"
+                    "HEART_DONATION_ADVANCED_FOOD_V2",//香草芒果冰糕任务
+                    "HEART_DONATE",//爱心捐赠
+                    "SHANGOU_xiadan",//去买秋天第一杯奶茶
+                    "OFFLINE_PAY",//到店付款,线下支付
+                    "ONLINE_PAY"//在线支付
             ));
             TypeReference<Set<String>> typeRef = new TypeReference<>() {
             };
             Set<String> badTaskSet = DataStore.INSTANCE.getOrCreate("badFarmTaskSet", typeRef);
-            /* 
-            if (badTaskSet.isEmpty()) {
-                badTaskSet.addAll(presetBad);
-                DataStore.INSTANCE.put("badFarmTaskSet", badTaskSet);
-            }
-            */
-            // 确保新任务被持久化,避免不必要的存储操作
-            if (badTaskSet.addAll(presetBad)) {
-                DataStore.INSTANCE.put("badFarmTaskSet", badTaskSet);
-            }
-
+            badTaskSet.addAll(presetBad);
+            DataStore.INSTANCE.put("badFarmTaskSet", badTaskSet);
             JSONObject jo = new JSONObject(AntFarmRpcCall.listFarmTask());
             if (ResChecker.checkRes(TAG, jo)) {
                 JSONArray farmTaskList = jo.getJSONArray("farmTaskList");
