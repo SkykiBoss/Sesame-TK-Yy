@@ -57,13 +57,24 @@ android {
             "0000"
         }
 
-        versionCode = gitCommitCount
-        val buildTag = "beta"
-        versionName = "v0.2.7.rc$gitCommitCount-$buildTag"
+      // 构建版本先注掉 下面把构建版本写死
+      //  versionCode = gitCommitCount
+      //  val buildTag = "beta"
+      //  versionName = "v0.2.7.rc$gitCommitCount-$buildTag"
+      //  buildConfigField("String", "BUILD_DATE", "\"$buildDate\"")
+      //  buildConfigField("String", "BUILD_TIME", "\"$buildTime\"")
+      //  buildConfigField("String", "BUILD_NUMBER", "\"$buildTargetCode\"")
+      //  buildConfigField("String", "BUILD_TAG", "\"$buildTag\"")
+      //  buildConfigField("String", "VERSION", "\"$versionName\"")
 
+        // 构建版本写死 2440
+        versionCode = 2440  // 关键修改点：写死版本代码
+        val buildTag = "beta"
+        versionName = "v0.2.7.rc2440-$buildTag"  // 关键修改点：写死版本名
+        
         buildConfigField("String", "BUILD_DATE", "\"$buildDate\"")
         buildConfigField("String", "BUILD_TIME", "\"$buildTime\"")
-        buildConfigField("String", "BUILD_NUMBER", "\"$buildTargetCode\"")
+        buildConfigField("String", "BUILD_NUMBER", "\"2440\"")  // 可选：写死构建编号
         buildConfigField("String", "BUILD_TAG", "\"$buildTag\"")
         buildConfigField("String", "VERSION", "\"$versionName\"")
 
